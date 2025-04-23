@@ -1,6 +1,5 @@
 För G ska följande krav uppfyllas:
 
-[x]    Använd Express och en SQL-databas (till exempel SQLite).
 [x]    Applikationen ska fungera som en sammanhängande helhet. Frontend-delen ska kommunicera med backend-delen som i sin tur ska kommunicera med databasen.
 [x]    Applikationens frontend ska kunna presentera (via GET och SELECT) uppgifter från databasen. Frontend-delen ska hämta JSON från backend-delen. Rendera uppgifterna i HTML-element (använd inte alert eller liknande).
 [x]    Ta emot och använd minst en adressparameter i backend-applikationen.
