@@ -26,14 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get("/books/:id", async (request: Request, response: Response) => {
     try {
-        const books = await database.all(
-            "SELECT * FROM books"
-        );
+        const books = await database.all("SELECT * FROM books");
         let findBook = books.find(
             (books) => books.book_id === Number(request.params.id)
         );
         console.log(findBook, "findBook");
-    
+
         if (findBook) {
             response.status(200).send(findBook);
         } else {
@@ -77,6 +75,31 @@ app.get("/bookcircles", async (request: Request, response: Response) => {
     console.log(circles, "books");
     response.status(200).send(circles);
 });
+app.post("/bookcircles", async (request: Request, response: Response) => {
+    let name = request.body.name;
+    let schedule = request.body.meeting_schedule;
+    let image = request.body.image;
+    const circles = await database.all("SELECT * FROM circles");
+
+    if (circles.some((circle) => circle.name === name) === true) {
+        response.status(409).send("Conflict");
+    } else if (
+        name !== "" &&
+        name !== null &&
+        request.body.hasOwnProperty("name") &&
+        request.body.hasOwnProperty("meeting_schedule")
+    ) {
+        await database.run(
+            "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",
+            [name, schedule, image]
+        );
+        console.log('lyckat')
+        response.status(201).send("Created");
+    } else {
+        response.status(400).send("Bad Request");
+    }
+
+});
 app.get("/bookcircles/:id", async (request: Request, response: Response) => {
     try {
         const circles = await database.all(
@@ -95,7 +118,7 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
             (circle) => circle.circles_id === Number(request.params.id)
         );
         console.log(findCircle, "findCircle");
-    
+
         if (findCircle) {
             response.status(200).send(findCircle);
         } else {
@@ -105,6 +128,64 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
         console.error(error);
         response.status(500).send("error");
     }
+});
+app.delete("bookcircles/:id", (request, response) => {
+/*     findCity = cities.findIndex((city) => city.id === request.params.id);
+    console.log(findCity, "findCity");
+
+    if (findCity >= 0) {
+        cities.splice(findCity, 1);
+        console.log(findCity, "deleted");
+
+        response.status(200).send(findCity);
+    } else {
+        response.status(404).send("Not Found");
+    } */
+});
+app.put("bookcircles/:id", (request, response) => {
+/*     let name = request.body.name;
+    let pop = request.body.population;
+    let id = request.body.id;
+
+    findCity = cities.find((city) => city.id === request.params.id);
+    console.log(findCity, "findCity");
+
+    if (!name || !pop || !id || Object.keys(request.body).length > 3) {
+        response.status(400).send("Bad Request");
+    } else if (
+        typeof name !== "string" ||
+        typeof pop !== "number" ||
+        pop < 0 ||
+        !Number.isInteger(pop)
+    ) {
+        response.status(400).send("Bad Request");
+    } else if (
+        cities.some((city) => city.name === name) === true ||
+        cities.some((city) => city.population === pop) === true
+    ) {
+        response.status(409).send("Conflict");
+    } else if (
+        request.body.hasOwnProperty("id") &&
+        id !== null &&
+        id === request.params.id &&
+        id &&
+        name !== "" &&
+        name !== null &&
+        request.body.hasOwnProperty("name") &&
+        typeof name === "string" &&
+        pop >= 0 &&
+        Number.isInteger(pop) &&
+        request.body.hasOwnProperty("population") &&
+        typeof pop === "number"
+    ) {
+        findCity.name = name;
+        findCity.population = pop;
+        console.log(cities, "uppdatering");
+
+        response.status(200).send(cities);
+    } else {
+        response.status(400).send("Bad Request");
+    } */
 });
 app.get("/profile", async (request: Request, response: Response) => {});
 app.get("/", async (request: Request, response: Response) => {});
