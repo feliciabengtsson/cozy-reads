@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS books (
 CREATE TABLE IF NOT EXISTS users (
 	users_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	address TEXT
+	address TEXT,
+	image TEXT DEFAULT 'https://images.unsplash.com/photo-1613946576929-3cc54e1cb5ae?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 );
 
 CREATE TABLE IF NOT EXISTS circles (

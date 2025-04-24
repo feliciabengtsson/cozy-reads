@@ -189,7 +189,12 @@ app.put("bookcircles/:id", (request, response) => {
         response.status(400).send("Bad Request");
     } */
 });
-app.get("/profile", async (request: Request, response: Response) => {});
+app.get("/profile", async (request: Request, response: Response) => {
+    const members = await database.all("SELECT * FROM users");
+
+    console.log(members, "members");
+    response.status(200).send(members);
+});
 app.get("/", async (request: Request, response: Response) => {});
 
 app.listen(port, () => {
