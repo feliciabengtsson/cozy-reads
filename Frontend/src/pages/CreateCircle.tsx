@@ -19,15 +19,6 @@ const BannerWrapper = styled.div`
     @media (min-width: 890px) {
     }
 `;
-const AddImage = styled.span`
-    background-color: #8b5e3c;
-    border: none;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    @media (min-width: 890px) {
-    }
-`;
 const AddInput = styled.input`
     background-color: rgba(255, 255, 255, 0.9);
     width: 14rem;
@@ -89,8 +80,7 @@ function CreateCircle() {
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { target } = event;
-        const { name, value } = target;
+        const { name, value } = event.target;
 
         setFormData({
             ...formData, // Keep existing form data
@@ -103,13 +93,37 @@ function CreateCircle() {
                 <h2>Create Book Circle</h2>
                 <form onSubmit={handleSubmit} method="post">
                     <div>
-                        <label htmlFor="Banner">Banner:</label>
+                        <label htmlFor="image">Banner:</label>
                         <BannerWrapper>
-                            <AddImage></AddImage>
+                            {formData.image ? (
+                                <BannerWrapper
+                                    style={{
+                                        background: `url(${formData.image})`,
+                                        width: 'inherit',
+                                        backgroundSize: 'contain'
+                                    }}
+                                >
+                                    <AddInput
+                                        name="image"
+                                        value={formData.image}
+                                        onChange={handleInputChange}
+                                        type="text"
+                                        placeholder="Enter image URL (optional)"
+                                    ></AddInput>
+                                </BannerWrapper>
+                            ) : (
+                                <AddInput
+                                    name="image"
+                                    value={formData.image}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    placeholder="Enter image URL (optional)"
+                                ></AddInput>
+                            )}
                         </BannerWrapper>
                     </div>
                     <div>
-                        <label htmlFor="Name">Name:</label>
+                        <label htmlFor="name">Name:</label>
                         <AddInput
                             name="name"
                             onChange={handleInputChange}

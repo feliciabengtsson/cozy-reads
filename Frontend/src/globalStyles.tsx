@@ -49,6 +49,13 @@ const GlobalStyle = createGlobalStyle`
 			color: var(--color-accent) !important;
 		} 
 	}
+	label {
+		display: block;
+		color: var(--color-secondary);
+		font-size: 16px;
+		font-weight: 600;
+		margin: 16px 0;
+	}
 `;
 
 export default GlobalStyle;
