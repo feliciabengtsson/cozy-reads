@@ -76,8 +76,10 @@ app.get("/bookcircles", async (request: Request, response: Response) => {
     response.status(200).send(circles);
 });
 app.post("/bookcircles", async (request: Request, response: Response) => {
+    console.log(request.body, 'info från form')
+    
     let name = request.body.name;
-    let schedule = request.body.meeting_schedule;
+    let schedule = request.body.schedule;
     let image = request.body.image;
     const circles = await database.all("SELECT * FROM circles");
 
@@ -86,8 +88,8 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
     } else if (
         name !== "" &&
         name !== null &&
-        request.body.hasOwnProperty("name") &&
-        request.body.hasOwnProperty("meeting_schedule")
+        schedule !== null &&
+        name !== ""
     ) {
         await database.run(
             "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",

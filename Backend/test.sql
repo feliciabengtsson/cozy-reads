@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS circles (
     currently_reading INTEGER,
     latest_comment TEXT,
 	next_meetup TEXT NOT NULL DEFAULT current_date,
-	image TEXT NOT NULL,
+	image TEXT,
 	FOREIGN KEY (currently_reading) REFERENCES books(book_id)
 );
 

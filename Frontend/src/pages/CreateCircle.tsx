@@ -33,27 +33,47 @@ const AddInput = styled.input`
     @media (min-width: 890px) {
     }
 `;
+const BtnWrapper = styled.div`
+    display: flex;
+    margin: 2rem;
+    @media (min-width: 890px) {
+    }
+`;
+const CreateBtn = styled.input`
+    background-color: #bfa58a;
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem;
+    margin: auto;
+    cursor: pointer;
+    @media (min-width: 890px) {
+    }
+`;
 
 function CreateCircle() {
-
     return (
         <Fragment>
             <AddContainer>
                 <h2>Create Book Circle</h2>
-                <div>
-                    <h3>Banner:</h3>
-                    <BannerWrapper>
-                        <AddImage></AddImage>
-                    </BannerWrapper>
-                </div>
-                <div>
-                    <h3>Name:</h3>
-                    <AddInput type="text" placeholder='Name for the book circle'/>
-                </div>
-                <div>
-                    <h3>Meeting schedule:</h3>
-                    <AddInput type="text" placeholder='How often will will you meet'/>
-                </div>
+                <form action="http://localhost:8080/bookcircles" method="post">
+                    <div>
+                        <h3>Banner:</h3>
+                        <BannerWrapper>
+                            <AddImage></AddImage>
+                        </BannerWrapper>
+                    </div>
+                    <div>
+                        <h3>Name:</h3>
+                        <AddInput name='name' type="text" placeholder="Name for the book circle" />
+                    </div>
+                    <div>
+                        <h3>Meeting schedule:</h3>
+                        <AddInput name='schedule' type="text" placeholder="How often will will you meet" />
+                    </div>
+                    <BtnWrapper>
+                        <CreateBtn type="submit" value="Create Book Circle" />
+                    </BtnWrapper>
+                </form>
             </AddContainer>
         </Fragment>
     );
