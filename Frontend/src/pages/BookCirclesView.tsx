@@ -52,7 +52,7 @@ const CircleDiv = styled.div`
 const CircleCard = styled.div`
     width: 5.5rem;
     height: 7rem;
-    margin: 0 5px;
+    margin: 5px 5px;
     @media (min-width: 890px) {
         width: 8rem;
         height: 9.5rem;
@@ -67,23 +67,19 @@ const CircleImage = styled.img`
     }
 `;
 const AddDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     right: 0.6rem;
     bottom: 5rem;
-    width: fit-content;
-    height: fit-content;
-`;
-const AddCircle = styled.span`
-    display: inline-block;
     background-color: #8b5e3c;
-    color: F5F1E7;
+    color: #F5F1E7;
     border: none;
-    font-size: 31px;
-    height: 60px;
-    width: 60px;
+    height: 3.5rem;
+    width: 3.5rem;
     border-radius: 50%;
-    @media (min-width: 890px) {
-    }
+    cursor: pointer;
 `;
 
 interface CircleType {
@@ -107,7 +103,7 @@ function BookCirclesView() {
             .then((data) => {
                 console.log(data, 'result');
 
-                setCircles(data.slice(0, 3));
+                setCircles(data);
                 console.log(circles, 'circles');
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,7 +140,7 @@ function BookCirclesView() {
                 <section id="add-circle">
                     <AddDiv>
                         <Link to={`/bookcircles/add`}>
-                            <AddCircle />
+                            <span className="material-symbols-outlined">add</span>
                         </Link>
                     </AddDiv>
                 </section>

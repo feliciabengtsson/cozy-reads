@@ -1,5 +1,9 @@
+/* https://www.shecodes.io/athena/53051-how-to-submit-a-form-and-redirect-to-another-page-in-react
+ */
+
 import styled from 'styled-components';
-import { useEffect, useState, Fragment } from 'react';
+import { useState, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddContainer = styled.div`
     width: fit-content;
@@ -50,25 +54,79 @@ const CreateBtn = styled.input`
     }
 `;
 
+interface FormType {
+    name: string;
+    schedule: string;
+    image: string;
+}
+
 function CreateCircle() {
+    const [formData, setFormData] = useState<FormType>({
+        name: '',
+        schedule: '',
+        image: ''
+    });
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevents default form submission behavior
+
+        try {
+            const response = await fetch('http://localhost:8080/bookcircles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            console.log(response, 'skickad till backend');
+            navigate('/bookcircles'); // Redirect to new page
+        } catch (error) {
+            console.error('error', error);
+        }
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { target } = event;
+        const { name, value } = target;
+
+        setFormData({
+            ...formData, // Keep existing form data
+            [name]: value // Update form data for the input field that changed
+        });
+    };
     return (
         <Fragment>
             <AddContainer>
                 <h2>Create Book Circle</h2>
-                <form action="http://localhost:8080/bookcircles" method="post">
+                <form onSubmit={handleSubmit} method="post">
                     <div>
-                        <h3>Banner:</h3>
+                        <label htmlFor="Banner">Banner:</label>
                         <BannerWrapper>
                             <AddImage></AddImage>
                         </BannerWrapper>
                     </div>
                     <div>
-                        <h3>Name:</h3>
-                        <AddInput name='name' type="text" placeholder="Name for the book circle" />
+                        <label htmlFor="Name">Name:</label>
+                        <AddInput
+                            name="name"
+                            onChange={handleInputChange}
+                            type="text"
+                            placeholder="Name for the book circle"
+                            value={formData.name}
+                        />
                     </div>
                     <div>
-                        <h3>Meeting schedule:</h3>
-                        <AddInput name='schedule' type="text" placeholder="How often will will you meet" />
+                        <label htmlFor="schedule">Meeting schedule:</label>
+                        <AddInput
+                            name="schedule"
+                            onChange={handleInputChange}
+                            type="text"
+                            placeholder="How often will will you meet"
+                            value={formData.schedule}
+                        />
                     </div>
                     <BtnWrapper>
                         <CreateBtn type="submit" value="Create Book Circle" />
