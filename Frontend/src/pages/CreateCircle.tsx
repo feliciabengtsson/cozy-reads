@@ -2,42 +2,58 @@ import styled from 'styled-components';
 import { useEffect, useState, Fragment } from 'react';
 
 const AddContainer = styled.div`
+    width: fit-content;
+    margin: auto;
+`;
+const BannerWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #bfa58a;
+    width: 295px;
+    height: 94px;
     @media (min-width: 890px) {
-
+    }
+`;
+const AddImage = styled.span`
+    background-color: #8b5e3c;
+    border: none;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    @media (min-width: 890px) {
+    }
+`;
+const AddInput = styled.input`
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 14rem;
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem;
+    @media (min-width: 890px) {
     }
 `;
 
-interface CircleType {
-    circle: {
-        circles_id: number;
-        name: string;
-        meetingSchedule: string;
-        currentlyReading: string;
-        latestComment: string;
-        nextMeetup: string;
-        image: string;
-    };
-}
-
 function CreateCircle() {
-    const [circles, setCircles] = useState<CircleType['circle'][]>([]);
-
-    useEffect(() => {
-        fetch('http://localhost:8080/bookcircles')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data, 'result');
-
-                setCircles(data.slice(0, 3));
-                console.log(circles, 'circles');
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <Fragment>
             <AddContainer>
-
+                <h2>Create Book Circle</h2>
+                <div>
+                    <h3>Banner:</h3>
+                    <BannerWrapper>
+                        <AddImage></AddImage>
+                    </BannerWrapper>
+                </div>
+                <div>
+                    <h3>Name:</h3>
+                    <AddInput type="text" placeholder='Name for the book circle'/>
+                </div>
+                <div>
+                    <h3>Meeting schedule:</h3>
+                    <AddInput type="text" placeholder='How often will will you meet'/>
+                </div>
             </AddContainer>
         </Fragment>
     );

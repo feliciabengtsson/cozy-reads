@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 		font-weight: 400;
 	}
 	h3 {
-		color: var(--color-neutral-dark);
+		color: var(--color-secondary);
 		font-size: 16px;
 		font-weight: 600;
 	}
