@@ -127,6 +127,7 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
                 circles.circles_id, 
                 circles.name,
                 books.title AS currently_reading, 
+                books.cover_url AS cover_url,
                 circles.meeting_schedule, 
                 circles.latest_comment, 
                 circles.next_meetup, 

@@ -4,6 +4,7 @@ import LogoImg from '/logonew.webp';
 import { Fragment } from 'react/jsx-runtime';
 import InfoModal from './InfoModal';
 import useModal from '../hooks/useModal';
+import SettingsModal from './SettingsModal';
 
 const NavTop = styled.nav`
     background-color: var(--color-primary);
@@ -28,7 +29,7 @@ const IconList = styled.ul`
 const Li = styled.li`
     margin: 0 0.8rem;
 `;
-const InfoModalIcon = styled.span`
+const ModalIcon = styled.span`
     cursor: pointer;
 `;
 
@@ -51,20 +52,21 @@ function NavigationTop() {
                             </Link>
                         </Li>
                         <Li>
-                            <InfoModalIcon onClick={toggle} className="material-symbols-outlined">
+                            <ModalIcon onClick={toggle} className="material-symbols-outlined">
                                 help
-                            </InfoModalIcon>
+                            </ModalIcon>
                         </Li>
                         <Li>
-                            <Link to="/">
-                                <span className="material-symbols-outlined">logout</span>
-                            </Link>
+                            <ModalIcon onClick={toggle} className="material-symbols-outlined">
+                                settings
+                            </ModalIcon>
                         </Li>
                     </IconList>
                 </NavDivTop>
             </NavTop>
 
             <InfoModal isOpen={isOpen} toggle={toggle} />
+            <SettingsModal isOpen={isOpen} toggle={toggle} />
         </Fragment>
     );
 }

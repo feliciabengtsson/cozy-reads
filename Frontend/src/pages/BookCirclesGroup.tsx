@@ -27,15 +27,36 @@ const ContentWrapper = styled.div`
     align-items: center;
 `;
 const ContentCard = styled.div`
+    position: relative;
     width: 19rem;
     height: 4rem;
     margin-top: 20px;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.6);
     vertical-align: center;
     @media (min-width: 890px) {
         width: 27rem;
     }
+`;
+const BookImage = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    border-radius: 6px;
+    @media (min-width: 890px) {
+    }
+`;
+const ContentInner = styled.div`
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
 `;
 const ContentHeader = styled.h3`
     color: #69472d;
@@ -55,6 +76,7 @@ interface Circle {
     latest_comment: string;
     next_meetup: string;
     image: string;
+    cover_url: string;
 }
 
 function BookCirclesGroup() {
@@ -67,7 +89,8 @@ function BookCirclesGroup() {
         currently_reading: '',
         latest_comment: '',
         next_meetup: '',
-        image: ''
+        image: '',
+        cover_url: ''
     });
 
     useEffect(() => {
@@ -92,9 +115,14 @@ function BookCirclesGroup() {
             </ImgWrapper>
             <ContentWrapper>
                 <ContentCard>
-                    <ContentHeader>
-                        Currently Reading: <ContentSpan>{circle.currently_reading}</ContentSpan>
-                    </ContentHeader>
+                    <BookImage
+                        style={{ backgroundImage: `url(${circle.cover_url})`, opacity: '60%' }}
+                    />
+                    <ContentInner>
+                        <ContentHeader>
+                            Currently Reading: <ContentSpan>{circle.currently_reading}</ContentSpan>
+                        </ContentHeader>
+                    </ContentInner>
                 </ContentCard>
                 <ContentCard>
                     <ContentHeader>

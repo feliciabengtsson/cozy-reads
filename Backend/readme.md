@@ -8,9 +8,9 @@ För G ska följande krav uppfyllas:
 För VG ska kraven för G vara uppfyllda. Dessutom ska följande krav uppfyllas:
 
 []    Applikationens frontend ska kunna ändra (via POST/PUT/DELETE och INSERT/UPDATE/DELETE) uppgifter i databasen. Frontend-delen ska skicka JSON till backend-delen. Ändringen ska gå att se på webbsidan.
-[]    Svara med en annan statuskod än 200 OK i minst en request handler (till exempel 201 Created när en resurs skapas).
+[x]    Svara med en annan statuskod än 200 OK i minst en request handler (till exempel 201 Created när en resurs skapas).
 []   Ta emot och använd minst en query-parameter i backend-applikationen. En adressparameter behöver användas även om detta krav uppfylls.
-[]    All kod ska vara enhetligt formaterad.
+[x]    All kod ska vara enhetligt formaterad.
 
 
 Lämna in koden (både backend och frontend) som en Zip-fil här på ITHS Distans. node_modules-mapparna ska inte ingå i filarkivet som lämnas in.
