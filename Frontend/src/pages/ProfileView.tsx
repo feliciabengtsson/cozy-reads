@@ -9,7 +9,9 @@ const ProfileWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 3rem;
+    margin: 2rem auto 3rem;
+    gap: 1rem;
+    width: fit-content;
     @media (min-width: 890px) {
     }
 `;
@@ -17,7 +19,6 @@ const ProfileImage = styled.img`
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    margin: 1rem auto;
     @media (min-width: 890px) {
     }
 `;
@@ -25,36 +26,80 @@ const ProfileName = styled.p`
     color: var(--color-secondary);
     font-size: 36px;
     font-weight: 400;
-    margin: auto;
     @media (min-width: 890px) {
     }
 `;
 const CircleContainer = styled.div`
-    width: 19rem;
-    height: fit-content;
+    width: 20rem;
+    height: 14rem;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 6px;
     padding: 0.6rem;
-    margin: auto;
+    margin: 10px auto 30px;
+    overflow: auto;
+
+    --fade-start: 90%;
+    mask-image: linear-gradient(to bottom, white var(--fade-start), transparent);
     @media (min-width: 890px) {
     }
 `;
 const CircleWrapper = styled.div`
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    width: 18rem;
+    height: fit-content;
+    margin: 0 auto 20px;
+    gap: 0.8rem;
     @media (min-width: 890px) {
-        text-align: center;
     }
 `;
-const CircleImage = styled.div`
+const ImageWrapper = styled.div`
+    position: relative;
+    @media (min-width: 890px) {
+    }
+`;
+const CircleImage = styled.img`
     width: 80px;
     height: 95px;
-    background-repeat: no-repeat;
-    margin: 0 5px;
+    object-fit: contain;
+    margin: 5px auto;
+    opacity: 30%;
     @media (min-width: 890px) {
     }
 `;
 const BookCover = styled.img`
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    width: 55px;
+    height: 65px;
+    object-fit: contain;
+    margin: auto;
+    @media (min-width: 890px) {
+    }
+`;
+const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    height: 95px;
+    @media (min-width: 890px) {
+    }
+`;
+const CircleName = styled.h3`
+    font-size: 0.9rem;
+    margin: 0;
+    @media (min-width: 890px) {
+    }
+`;
+const CircleMembers = styled.p`
+    font-size: 0.8rem;
+    margin: 0;
     @media (min-width: 890px) {
     }
 `;
@@ -122,18 +167,15 @@ function ProfileView() {
             <CircleContainer>
                 {circles.map((circle) => (
                     <Fragment>
-                        <CircleImage
-                            style={{
-                                background: `url(${circle.image})`,
-                                width: 'inherit',
-                                backgroundSize: 'contain'
-                            }}
-                        >
-                            <BookCover src="" alt="Book-cover" />
-                        </CircleImage>
                         <CircleWrapper>
-                            <h3>{circle.name}</h3>
-                            <span>Number of members</span>
+                            <ImageWrapper>
+                                <CircleImage src={circle.image} alt="Circle image" />
+                                <BookCover src={circle.image} alt="Book-cover" />
+                            </ImageWrapper>
+                            <TextWrapper>
+                                <CircleName>{circle.name}</CircleName>
+                                <CircleMembers>Number of members</CircleMembers>
+                            </TextWrapper>
                         </CircleWrapper>
                     </Fragment>
                 ))}
