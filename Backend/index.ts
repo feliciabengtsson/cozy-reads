@@ -70,10 +70,28 @@ app.post("/books", async (request: Request, response: Response) => {
     response.status(201).send(addedBook);
 });
 app.get("/bookcircles", async (request: Request, response: Response) => {
-    const circles = await database.all("SELECT * FROM circles");
+    try {
+        const circles = await database.all(
+            `SELECT 
+                circles.circles_id, 
+                circles.name,
+                books.title AS currently_reading, 
+                books.cover_url AS cover_url,
+                circles.meeting_schedule, 
+                circles.latest_comment, 
+                circles.next_meetup, 
+                circles.image 
+            FROM circles 
+            LEFT JOIN books ON circles.currently_reading = books.book_id`
+        );
 
-    console.log(circles, "books");
-    response.status(200).send(circles);
+        console.log(circles, "books");
+        response.status(200).send(circles);
+    }
+    catch (error) {
+        console.log(error)
+        response.status(500).send('error');
+    }
 });
 app.post("/bookcircles", async (request: Request, response: Response) => {
     console.log(request.body, 'info från form')

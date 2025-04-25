@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import MyBooksContext from '../MyBooksContext';
 import MyBooks from '../components/MyBooks';
@@ -116,11 +117,12 @@ interface Book {
 interface CircleType {
     circles_id: number;
     name: string;
-    meetingSchedule: string;
-    currentlyReading: string;
-    latestComment: string;
-    nextMeetup: string;
+    meeting_schedule: string;
+    currently_reading: string;
+    latest_comment: string;
+    next_meetup: string;
     image: string;
+    cover_url: string;
 }
 interface UserType {
     users_id: number;
@@ -166,18 +168,18 @@ function ProfileView() {
             <h3>My Circles:</h3>
             <CircleContainer>
                 {circles.map((circle) => (
-                    <Fragment>
-                        <CircleWrapper>
-                            <ImageWrapper>
-                                <CircleImage src={circle.image} alt="Circle image" />
-                                <BookCover src={circle.image} alt="Book-cover" />
-                            </ImageWrapper>
-                            <TextWrapper>
-                                <CircleName>{circle.name}</CircleName>
-                                <CircleMembers>Number of members</CircleMembers>
-                            </TextWrapper>
-                        </CircleWrapper>
-                    </Fragment>
+                    <Link to={`/bookcircles/${circle.circles_id}`}>
+                    <CircleWrapper key={circle.circles_id}>
+                        <ImageWrapper>
+                            <CircleImage src={circle.image} alt="Circle image" />
+                            <BookCover src={circle.cover_url} alt="Book-cover" />
+                        </ImageWrapper>
+                        <TextWrapper>
+                            <CircleName>{circle.name}</CircleName>
+                            <CircleMembers>Number of members</CircleMembers>
+                        </TextWrapper>
+                    </CircleWrapper>
+                    </Link>
                 ))}
             </CircleContainer>
             <MyBooksContext.Provider value={{ books, setBooks }}>
