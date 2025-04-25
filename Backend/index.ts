@@ -163,50 +163,50 @@ app.delete("bookcircles/:id", (request, response) => {
         response.status(404).send("Not Found");
     } */
 });
-app.put("bookcircles/:id", (request, response) => {
-/*     let name = request.body.name;
-    let pop = request.body.population;
-    let id = request.body.id;
+app.put("profile", async (request, response) => {
+    console.log(request.body, 'info från form')
+    
+    let name = request.body.name;
+    let address = request.body.address;
+    let users_id = request.body.users_id;
+    let image = request.body.image;
 
-    findCity = cities.find((city) => city.id === request.params.id);
-    console.log(findCity, "findCity");
+    const users = await database.all("SELECT * FROM circles");
 
-    if (!name || !pop || !id || Object.keys(request.body).length > 3) {
+    const findUser = users.find((user) => user.users_id === request.body.users_id);
+    console.log(findUser, "findUser");
+
+    if (!name || !address || !users_id || !image || Object.keys(request.body).length > 4) {
         response.status(400).send("Bad Request");
     } else if (
-        typeof name !== "string" ||
-        typeof pop !== "number" ||
-        pop < 0 ||
-        !Number.isInteger(pop)
-    ) {
-        response.status(400).send("Bad Request");
-    } else if (
-        cities.some((city) => city.name === name) === true ||
-        cities.some((city) => city.population === pop) === true
+        users.some((user) => user.name === name) === true ||
+        users.some((user) => user.address === address) === true ||
+        users.some((user) => user.users_id === users_id) === true ||
+        users.some((user) => user.image === image) === true
     ) {
         response.status(409).send("Conflict");
     } else if (
-        request.body.hasOwnProperty("id") &&
-        id !== null &&
-        id === request.params.id &&
-        id &&
+        users_id !== null &&
         name !== "" &&
         name !== null &&
+        address !== "" &&
+        address !== null &&
+        image !== "" &&
+        image !== null &&
         request.body.hasOwnProperty("name") &&
-        typeof name === "string" &&
-        pop >= 0 &&
-        Number.isInteger(pop) &&
-        request.body.hasOwnProperty("population") &&
-        typeof pop === "number"
+        request.body.hasOwnProperty("address") &&
+        request.body.hasOwnProperty("users_id") &&
+        request.body.hasOwnProperty("image")
     ) {
-        findCity.name = name;
-        findCity.population = pop;
-        console.log(cities, "uppdatering");
+        findUser.name = name;
+        findUser.address = address;
+        findUser.image = image;
+        console.log(users, "uppdatering");
 
-        response.status(200).send(cities);
+        response.status(200).send(users);
     } else {
         response.status(400).send("Bad Request");
-    } */
+    }
 });
 app.get("/profile", async (request: Request, response: Response) => {
     const members = await database.all("SELECT * FROM users");

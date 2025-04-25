@@ -35,6 +35,7 @@ const ModalIcon = styled.span`
 
 function NavigationTop() {
     const { isOpen, toggle } = useModal();
+    const { isOpenSettings, toggleSettings } = useModal();
 
     return (
         <Fragment>
@@ -57,7 +58,7 @@ function NavigationTop() {
                             </ModalIcon>
                         </Li>
                         <Li>
-                            <ModalIcon onClick={toggle} className="material-symbols-outlined">
+                            <ModalIcon onClick={toggleSettings} className="material-symbols-outlined">
                                 settings
                             </ModalIcon>
                         </Li>
@@ -66,7 +67,7 @@ function NavigationTop() {
             </NavTop>
 
             <InfoModal isOpen={isOpen} toggle={toggle} />
-            <SettingsModal isOpen={isOpen} toggle={toggle} />
+            <SettingsModal isOpenSettings={isOpenSettings} toggleSettings={toggleSettings} />
         </Fragment>
     );
 }

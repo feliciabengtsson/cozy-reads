@@ -1,5 +1,4 @@
-import { useState, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 const ModalContainer = styled.div`
@@ -30,6 +29,13 @@ const IconWrapper = styled.div`
     display: flex;
     justify-content: end;
 `;
+const ProfileImage = styled.img`
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    @media (min-width: 890px) {
+    }
+`;
 const Input = styled.input`
     background-color: rgba(255, 255, 255, 0.9);
     width: 14rem;
@@ -45,7 +51,7 @@ const BtnWrapper = styled.div`
     @media (min-width: 890px) {
     }
 `;
-const CreateBtn = styled.input`
+const EditBtn = styled.input`
     background-color: #bfa58a;
     border: none;
     border-radius: 15px;
@@ -57,12 +63,18 @@ const CreateBtn = styled.input`
 `;
 
 interface Modal {
-    isOpen: boolean;
-    toggle: () => void;
+    isOpenSettings: boolean;
+    toggleSettings: () => void;
 }
 interface FormType {
     name: string;
     schedule: string;
+    image: string;
+}
+interface UserType {
+    users_id: number;
+    name: string;
+    address: string;
     image: string;
 }
 
@@ -72,15 +84,23 @@ function SettingsModal(props: Modal) {
         schedule: '',
         image: ''
     });
+    const [users, setUsers] = useState<UserType[]>([]);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        fetch('http://localhost:8080/profile')
+            .then((response) => response.json())
+            .then((result: UserType[]) => {
+                setUsers(result.slice(0, 1));
+                console.log(result.slice(0, 1), 'users');
+            });
+    }, []);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents default form submission behavior
 
         try {
-            const response = await fetch('http://localhost:8080/bookcircles', {
-                method: 'POST',
+            const response = await fetch('http://localhost:8080/profile', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -88,7 +108,6 @@ function SettingsModal(props: Modal) {
             });
 
             console.log(response, 'skickad till backend');
-            navigate('/bookcircles'); // Redirect to new page
         } catch (error) {
             console.error('error', error);
         }
@@ -105,30 +124,36 @@ function SettingsModal(props: Modal) {
 
     return (
         <Fragment>
-            {props.isOpen && (
+            {props.isOpenSettings && (
                 <ModalContainer>
                     <ModalWrapper>
                         <IconWrapper>
-                            <CloseIcon onClick={props.toggle} className="material-symbols-outlined">
+                            <CloseIcon
+                                onClick={props.toggleSettings}
+                                className="material-symbols-outlined"
+                            >
                                 close
                             </CloseIcon>
                         </IconWrapper>
-                        <h3>Settings:</h3>
-                        <form onSubmit={handleSubmit} method="post">
-                            <div>
-                                <label htmlFor="name">Name:</label>
-                                <Input
-                                    name="name"
-                                    onChange={handleInputChange}
-                                    type="text"
-                                    placeholder="Name for the book circle"
-                                    value={formData.name}
-                                />
-                            </div>
-                            <BtnWrapper>
-                                <CreateBtn type="submit" value="Create Book Circle" />
-                            </BtnWrapper>
-                        </form>
+                        <h3>Account Settings</h3>
+                        {users.map((user) => (
+                            <form onSubmit={handleSubmit} method="put">
+                                <div>
+                                    <ProfileImage src={user.image} alt="Profile image" />
+                                    <label htmlFor="name">Name: {user.name}</label>
+                                    <Input
+                                        name="name"
+                                        onChange={handleInputChange}
+                                        type="text"
+                                        placeholder="Update your name"
+                                        value={formData.name}
+                                    />
+                                </div>
+                                <BtnWrapper>
+                                    <EditBtn type="submit" value="Edit name" />
+                                </BtnWrapper>
+                            </form>
+                        ))}
                     </ModalWrapper>
                 </ModalContainer>
             )}

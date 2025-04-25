@@ -3,14 +3,20 @@ import { useState } from 'react';
  */
 function useModal() {
     const [isOpen, setIsOpen] = useState(false);
+    const [ isOpenSettings, setIsOpenSettings ] = useState(false);
 
     const toggle = () => {
         setIsOpen(!isOpen);
     };
+    const toggleSettings = () => {
+        setIsOpenSettings(!isOpenSettings);
+    };
 
     return {
         isOpen,
-        toggle
+        toggle,
+        isOpenSettings,
+        toggleSettings
     };
 }
 
