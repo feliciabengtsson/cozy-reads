@@ -87,15 +87,14 @@ app.get("/bookcircles", async (request: Request, response: Response) => {
 
         console.log(circles, "books");
         response.status(200).send(circles);
-    }
-    catch (error) {
-        console.log(error)
-        response.status(500).send('error');
+    } catch (error) {
+        console.log(error);
+        response.status(500).send("error");
     }
 });
 app.post("/bookcircles", async (request: Request, response: Response) => {
-    console.log(request.body, 'info från form')
-    
+    console.log(request.body, "info från form");
+
     let name = request.body.name;
     let schedule = request.body.schedule;
     let image = request.body.image;
@@ -113,12 +112,11 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
             "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",
             [name, schedule, image]
         );
-        console.log('lyckat')
+        console.log("lyckat");
         response.status(201).send("Created");
     } else {
         response.status(400).send("Bad Request");
     }
-
 });
 app.get("/bookcircles/:id", async (request: Request, response: Response) => {
     try {
@@ -150,8 +148,8 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
         response.status(500).send("error");
     }
 });
-app.delete("bookcircles/:id", (request, response) => {
-/*     findCity = cities.findIndex((city) => city.id === request.params.id);
+app.delete("/bookcircles/:id", (request, response) => {
+    /*     findCity = cities.findIndex((city) => city.id === request.params.id);
     console.log(findCity, "findCity");
 
     if (findCity >= 0) {
@@ -163,48 +161,48 @@ app.delete("bookcircles/:id", (request, response) => {
         response.status(404).send("Not Found");
     } */
 });
-app.put("profile", async (request, response) => {
-    console.log(request.body, 'info från form')
-    
-    let name = request.body.name;
-    let address = request.body.address;
-    let users_id = request.body.users_id;
-    let image = request.body.image;
+app.put("/profile", async (request, response) => {
+    console.log(request.body, "info från form");
 
-    const users = await database.all("SELECT * FROM circles");
+    const name = request.body.name;
+    const id = request.body.id;
 
-    const findUser = users.find((user) => user.users_id === request.body.users_id);
+    const users = await database.all("SELECT * FROM users");
+
+    const findUser = users.find((user) => user.users_id === id);
     console.log(findUser, "findUser");
 
-    if (!name || !address || !users_id || !image || Object.keys(request.body).length > 4) {
+    const address = findUser.address;
+    const image = findUser.image;
+    if (
+        !name ||
+        !address ||
+        !id ||
+        !image ||
+        Object.keys(request.body).length > 4
+    ) {
+        console.log("Bad Request");
         response.status(400).send("Bad Request");
     } else if (
-        users.some((user) => user.name === name) === true ||
-        users.some((user) => user.address === address) === true ||
-        users.some((user) => user.users_id === users_id) === true ||
-        users.some((user) => user.image === image) === true
-    ) {
-        response.status(409).send("Conflict");
-    } else if (
-        users_id !== null &&
+        id !== null &&
         name !== "" &&
         name !== null &&
         address !== "" &&
         address !== null &&
         image !== "" &&
-        image !== null &&
-        request.body.hasOwnProperty("name") &&
-        request.body.hasOwnProperty("address") &&
-        request.body.hasOwnProperty("users_id") &&
-        request.body.hasOwnProperty("image")
+        image !== null
     ) {
-        findUser.name = name;
-        findUser.address = address;
-        findUser.image = image;
-        console.log(users, "uppdatering");
+        await database.run('UPDATE users SET name=?, address=?, image=? WHERE users_id=?', [
+            name,
+            address,
+            image,
+            id
+          ])
+        console.log(findUser, "uppdatering");
 
-        response.status(200).send(users);
+        response.status(200).send(findUser);
     } else {
+        console.log("Bad Request");
         response.status(400).send("Bad Request");
     }
 });

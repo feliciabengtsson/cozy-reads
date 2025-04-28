@@ -17,7 +17,7 @@ const ModalWrapper = styled.div`
     background: #f5f1e7;
     width: 70%;
     max-width: 800px;
-    height: 70%;
+    height: 50%;
     padding: 1rem;
     border-radius: 1rem;
 `;
@@ -29,25 +29,32 @@ const IconWrapper = styled.div`
     display: flex;
     justify-content: end;
 `;
+const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 const ProfileImage = styled.img`
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
+    margin-top: 1.5rem;
     @media (min-width: 890px) {
     }
 `;
 const Input = styled.input`
     background-color: rgba(255, 255, 255, 0.9);
-    width: 14rem;
+    width: 10rem;
     border: none;
     border-radius: 15px;
     padding: 0.5rem;
+    margin-top: 1rem;
     @media (min-width: 890px) {
     }
 `;
 const BtnWrapper = styled.div`
     display: flex;
-    margin: 2rem;
+    margin: 1rem;
     @media (min-width: 890px) {
     }
 `;
@@ -68,8 +75,6 @@ interface Modal {
 }
 interface FormType {
     name: string;
-    schedule: string;
-    image: string;
 }
 interface UserType {
     users_id: number;
@@ -80,9 +85,7 @@ interface UserType {
 
 function SettingsModal(props: Modal) {
     const [formData, setFormData] = useState<FormType>({
-        name: '',
-        schedule: '',
-        image: ''
+        name: ''
     });
     const [users, setUsers] = useState<UserType[]>([]);
 
@@ -95,8 +98,15 @@ function SettingsModal(props: Modal) {
             });
     }, []);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, user: UserType) => {
         event.preventDefault(); // Prevents default form submission behavior
+
+        const updatedUser = {
+            ...formData,
+            id: user.users_id
+        }
+        console.log(updatedUser, 'updated user');
+
 
         try {
             const response = await fetch('http://localhost:8080/profile', {
@@ -104,10 +114,23 @@ function SettingsModal(props: Modal) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(updatedUser)
             });
+            if (response.ok) {
+                const updated = await response.json()
+                setUsers([updated])
+                setFormData({name: ''}) //töm inputfältet
 
-            console.log(response, 'skickad till backend');
+                fetch('http://localhost:8080/profile')
+                .then((response) => response.json())
+                .then((result: UserType[]) => {
+                    setUsers(result.slice(0, 1));
+                    console.log(result.slice(0, 1), 'users');
+                });
+            }
+            else {
+                console.error('Misslyckades med uppdatering');
+            }
         } catch (error) {
             console.error('error', error);
         }
@@ -135,10 +158,10 @@ function SettingsModal(props: Modal) {
                                 close
                             </CloseIcon>
                         </IconWrapper>
-                        <h3>Account Settings</h3>
                         {users.map((user) => (
-                            <form onSubmit={handleSubmit} method="put">
-                                <div>
+                            <form onSubmit={(event) => handleSubmit(event, user)} method="put" key={user.users_id}>
+                                <ContentWrapper>
+                                    <h3>Account Settings</h3>
                                     <ProfileImage src={user.image} alt="Profile image" />
                                     <label htmlFor="name">Name: {user.name}</label>
                                     <Input
@@ -148,7 +171,7 @@ function SettingsModal(props: Modal) {
                                         placeholder="Update your name"
                                         value={formData.name}
                                     />
-                                </div>
+                                </ContentWrapper>
                                 <BtnWrapper>
                                     <EditBtn type="submit" value="Edit name" />
                                 </BtnWrapper>
