@@ -104,9 +104,8 @@ function SettingsModal(props: Modal) {
         const updatedUser = {
             ...formData,
             id: user.users_id
-        }
+        };
         console.log(updatedUser, 'updated user');
-
 
         try {
             const response = await fetch('http://localhost:8080/profile', {
@@ -117,18 +116,17 @@ function SettingsModal(props: Modal) {
                 body: JSON.stringify(updatedUser)
             });
             if (response.ok) {
-                const updated = await response.json()
-                setUsers([updated])
-                setFormData({name: ''}) //töm inputfältet
+                const updated = await response.json();
+                setUsers([updated]);
+                setFormData({ name: '' }); //töm inputfältet
 
                 fetch('http://localhost:8080/profile')
-                .then((response) => response.json())
-                .then((result: UserType[]) => {
-                    setUsers(result.slice(0, 1));
-                    console.log(result.slice(0, 1), 'users');
-                });
-            }
-            else {
+                    .then((response) => response.json())
+                    .then((result: UserType[]) => {
+                        setUsers(result.slice(0, 1));
+                        console.log(result.slice(0, 1), 'users');
+                    });
+            } else {
                 console.error('Misslyckades med uppdatering');
             }
         } catch (error) {
@@ -158,8 +156,13 @@ function SettingsModal(props: Modal) {
                                 close
                             </CloseIcon>
                         </IconWrapper>
+                        
                         {users.map((user) => (
-                            <form onSubmit={(event) => handleSubmit(event, user)} method="put" key={user.users_id}>
+                            <form
+                                onSubmit={(event) => handleSubmit(event, user)}
+                                method="put"
+                                key={user.users_id}
+                            >
                                 <ContentWrapper>
                                     <h3>Account Settings</h3>
                                     <ProfileImage src={user.image} alt="Profile image" />
