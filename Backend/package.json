@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
-    "dev": "concurrently \"nodemon index.ts\" \"npx tsc --watch\"",
+    "dev": "concurrently \"nodemon index.js\" \"npx tsc --watch\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

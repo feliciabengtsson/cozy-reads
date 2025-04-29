@@ -1,6 +1,12 @@
+/* https://dev.to/nishanthan-k/typescript-event-types-and-event-handling-in-react-a-complete-guide-for-beginners-3cn0
+ */
+/* https://medium.com/@alexanie_/https-ocxigin-hashnode-dev-uselocation-hook-in-react-router-758a0a711308
+ */
+/* https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page
+ */
 import styled from 'styled-components';
 import { useEffect, useState, Fragment } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const CirclesHeader = styled.h2`
     margin-left: auto;
@@ -93,6 +99,9 @@ function BookCirclesGroup() {
         cover_url: ''
     });
 
+    const navigate = useNavigate();
+    console.log(navigate, 'navigate');
+
     useEffect(() => {
         if (circleId !== undefined) {
             fetch(`http://localhost:8080/bookcircles/${circleId}`)
@@ -106,6 +115,23 @@ function BookCirclesGroup() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>, circle: Circle) => {
+        event.preventDefault(); // Prevents default form submission behavior
+        console.log(circle.circles_id, 'delete');
+        try {
+            const response = await fetch(`http://localhost:8080/bookcircles/${circle.circles_id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                navigate('/');
+            } else {
+                console.error('Misslyckades med delete');
+            }
+        } catch (error) {
+            console.error('error', error);
+        }
+    };
 
     return (
         <Fragment>
@@ -139,6 +165,7 @@ function BookCirclesGroup() {
                         Next Meetup: <ContentSpan>{circle.next_meetup}</ContentSpan>
                     </ContentHeader>
                 </ContentCard>
+                <button onClick={(event) => handleDelete(event, circle)}>Delete Circle</button>
             </ContentWrapper>
         </Fragment>
     );

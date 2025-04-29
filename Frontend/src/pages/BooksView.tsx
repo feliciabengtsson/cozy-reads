@@ -1,3 +1,7 @@
+/* https://apidog.com/blog/nodejs-express-get-query-params/
+ */
+/* https://react.dev/reference/react-dom/components/select
+ */
 import styled from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
@@ -74,6 +78,7 @@ function BooksView() {
     const [books, setBooks] = useState<BookType['book'][]>([]);
     const [search, setSearch] = useState('');
     const [filteredBooks, setFilteredBooks] = useState(books);
+    const [selectedGenre, setSelectedGenre] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:8080/books')
@@ -95,9 +100,27 @@ function BooksView() {
         setFilteredBooks(filteredSearch);
     };
 
+    const handleFilter: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
+        setSelectedGenre(event.target.value);
+
+        fetch(`http://localhost:8080/books?genre=${selectedGenre}`)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result, 'selectedGenre ny fetch');
+                setBooks(result);
+            });
+    };
+
     return (
         <Fragment>
             <section>
+                <h3>📖 Book of the Month:</h3>
+                <p>The Invisible Library by Genevieve Cogman</p>
+                <p>
+                    Join us on an adventure through parallel worlds where a secret library collects
+                    unique books from different realities! Perfect for fans of fantasy and mystery.
+                </p>
+                <p>💬 Discussion Starts: 25th of each month</p>
                 <Form>
                     <div>
                         <input
@@ -110,7 +133,12 @@ function BooksView() {
                     </div>
                     <div>
                         <label>
-                            <select name="SelectedGenre" defaultValue="Genres">
+                            <select
+                                onChange={handleFilter}
+                                value={selectedGenre}
+                                name="SelectedGenre"
+                                defaultValue="Genres"
+                            >
                                 <option value="Genres">Genres</option>
                                 <option value="Classic Fiction">Classic Fiction</option>
                                 <option value="Dystopian">Dystopian</option>
@@ -125,13 +153,6 @@ function BooksView() {
                         </label>
                     </div>
                 </Form>
-                <h3>📖 Book of the Month:</h3>
-                <p>The Invisible Library by Genevieve Cogman</p>
-                <p>
-                    Join us on an adventure through parallel worlds where a secret library collects
-                    unique books from different realities! Perfect for fans of fantasy and mystery.
-                </p>
-                <p>💬 Discussion Starts: 25th of each month</p>
             </section>
             <BooksContainer>
                 {filteredBooks.length > 0 ? (
