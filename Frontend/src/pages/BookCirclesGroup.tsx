@@ -73,6 +73,9 @@ const ContentSpan = styled.span`
     font-weight: 400;
     font-size: 14px;
 `;
+const DeleteCircleBtn = styled.button`
+
+`;
 
 interface Circle {
     circles_id: number;
@@ -165,7 +168,7 @@ function BookCirclesGroup() {
                         Next Meetup: <ContentSpan>{circle.next_meetup}</ContentSpan>
                     </ContentHeader>
                 </ContentCard>
-                <button onClick={(event) => handleDelete(event, circle)}>Delete Circle</button>
+                <DeleteCircleBtn onClick={(event) => handleDelete(event, circle)}>Delete Circle</DeleteCircleBtn>
             </ContentWrapper>
         </Fragment>
     );

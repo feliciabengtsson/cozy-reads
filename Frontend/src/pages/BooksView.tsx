@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 const Form = styled.form`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 1rem auto;
     input,
     select {
@@ -17,6 +18,9 @@ const Form = styled.form`
         border: none;
         border-radius: 15px;
         padding: 0.5rem;
+    }
+    select {
+        width: 6rem;
     }
 `;
 const BooksContainer = styled.div`
