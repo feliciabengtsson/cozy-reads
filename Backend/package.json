@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "För G ska följande krav uppfyllas:",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
