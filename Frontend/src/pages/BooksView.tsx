@@ -101,9 +101,10 @@ function BooksView() {
     };
 
     const handleFilter: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
-        setSelectedGenre(event.target.value);
+        const genre = event.target.value
+        setSelectedGenre(genre);
 
-        fetch(`http://localhost:8080/books?genre=${selectedGenre}`)
+        fetch(`http://localhost:8080/books?genre=${genre}`)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result, 'selectedGenre ny fetch');
