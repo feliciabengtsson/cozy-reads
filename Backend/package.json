@@ -1,16 +1,16 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
-    "dev": "concurrently \"nodemon index.js\" \"npx tsc --watch\"",
+    "dev": "concurrently \"nodemon index.ts\" \"npx tsc --watch\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "För G ska följande krav uppfyllas:",
+  "description": "Labb2-fullstack",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.3",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.10",
     "typescript": "^5.8.3"

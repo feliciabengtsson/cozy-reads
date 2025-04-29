@@ -6,3 +6,5 @@ node_modules
 *.js
 *.sqlite
 *.sqlite-journalnode_modules
+node_modules
+*.js

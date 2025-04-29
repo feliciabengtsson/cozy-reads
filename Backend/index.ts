@@ -72,16 +72,16 @@ app.post("/books", async (request: Request, response: Response) => {
 app.get("/bookcircles", async (request: Request, response: Response) => {
     try {
         const circles = await database.all(
-            `SELECT 
-                circles.circles_id, 
+            `SELECT
+                circles.circles_id,
                 circles.name,
-                books.title AS currently_reading, 
+                books.title AS currently_reading,
                 books.cover_url AS cover_url,
-                circles.meeting_schedule, 
-                circles.latest_comment, 
-                circles.next_meetup, 
-                circles.image 
-            FROM circles 
+                circles.meeting_schedule,
+                circles.latest_comment,
+                circles.next_meetup,
+                circles.image
+            FROM circles
             LEFT JOIN books ON circles.currently_reading = books.book_id`
         );
 
@@ -121,16 +121,16 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
 app.get("/bookcircles/:id", async (request: Request, response: Response) => {
     try {
         const circles = await database.all(
-            `SELECT 
-                circles.circles_id, 
+            `SELECT
+                circles.circles_id,
                 circles.name,
-                books.title AS currently_reading, 
+                books.title AS currently_reading,
                 books.cover_url AS cover_url,
-                circles.meeting_schedule, 
-                circles.latest_comment, 
-                circles.next_meetup, 
-                circles.image 
-            FROM circles 
+                circles.meeting_schedule,
+                circles.latest_comment,
+                circles.next_meetup,
+                circles.image
+            FROM circles
             LEFT JOIN books ON circles.currently_reading = books.book_id`
         );
         let findCircle = circles.find(
@@ -148,18 +148,11 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
         response.status(500).send("error");
     }
 });
-app.delete("/bookcircles/:id", (request, response) => {
-    /*     findCity = cities.findIndex((city) => city.id === request.params.id);
-    console.log(findCity, "findCity");
+app.delete("/bookcircles/:id", async (request, response) => {
+    await database.run('DELETE FROM cities WHERE id=?', [request.params.id])
 
-    if (findCity >= 0) {
-        cities.splice(findCity, 1);
-        console.log(findCity, "deleted");
+    response.status(200).send('ok')
 
-        response.status(200).send(findCity);
-    } else {
-        response.status(404).send("Not Found");
-    } */
 });
 app.put("/profile", async (request, response) => {
     console.log(request.body, "info från form");
