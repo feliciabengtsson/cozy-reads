@@ -58,7 +58,10 @@ function NavigationTop() {
                             </ModalIcon>
                         </Li>
                         <Li>
-                            <ModalIcon onClick={toggleSettings} className="material-symbols-outlined">
+                            <ModalIcon
+                                onClick={toggleSettings}
+                                className="material-symbols-outlined"
+                            >
                                 settings
                             </ModalIcon>
                         </Li>

@@ -118,7 +118,7 @@ function SettingsModal(props: Modal) {
             if (response.ok) {
                 const updated = await response.json();
                 setUsers([updated]);
-                setFormData({ name: '' }); //töm inputfältet
+                setFormData({ name: '' }); //empty inputfield
 
                 fetch('http://localhost:8080/profile')
                     .then((response) => response.json())
@@ -127,7 +127,7 @@ function SettingsModal(props: Modal) {
                         console.log(result.slice(0, 1), 'users');
                     });
             } else {
-                console.error('Misslyckades med uppdatering');
+                console.error('failed update');
             }
         } catch (error) {
             console.error('error', error);
@@ -156,7 +156,7 @@ function SettingsModal(props: Modal) {
                                 close
                             </CloseIcon>
                         </IconWrapper>
-                        
+
                         {users.map((user) => (
                             <form
                                 onSubmit={(event) => handleSubmit(event, user)}

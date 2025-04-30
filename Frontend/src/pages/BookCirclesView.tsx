@@ -74,7 +74,7 @@ const AddDiv = styled.div`
     right: 0.6rem;
     bottom: 5rem;
     background-color: #8b5e3c;
-    color: #F5F1E7;
+    color: #f5f1e7;
     border: none;
     height: 3.5rem;
     width: 3.5rem;

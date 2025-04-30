@@ -73,9 +73,7 @@ const ContentSpan = styled.span`
     font-weight: 400;
     font-size: 14px;
 `;
-const DeleteCircleBtn = styled.button`
-
-`;
+const DeleteCircleBtn = styled.button``;
 
 interface Circle {
     circles_id: number;
@@ -113,7 +111,7 @@ function BookCirclesGroup() {
                     console.log(data, 'result');
 
                     setCircle(data);
-                    console.log(circle, 'vald bok');
+                    console.log(circle, 'chosen book');
                 });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +127,7 @@ function BookCirclesGroup() {
             if (response.ok) {
                 navigate('/');
             } else {
-                console.error('Misslyckades med delete');
+                console.error('failed delete');
             }
         } catch (error) {
             console.error('error', error);
@@ -168,7 +166,9 @@ function BookCirclesGroup() {
                         Next Meetup: <ContentSpan>{circle.next_meetup}</ContentSpan>
                     </ContentHeader>
                 </ContentCard>
-                <DeleteCircleBtn onClick={(event) => handleDelete(event, circle)}>Delete Circle</DeleteCircleBtn>
+                <DeleteCircleBtn onClick={(event) => handleDelete(event, circle)}>
+                    Delete Circle
+                </DeleteCircleBtn>
             </ContentWrapper>
         </Fragment>
     );

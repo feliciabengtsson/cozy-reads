@@ -56,7 +56,7 @@ function BookDetails() {
                     console.log(data, 'result');
 
                     setBook(data);
-                    console.log(book, 'vald bok');
+                    console.log(book, 'chosen book');
                 });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

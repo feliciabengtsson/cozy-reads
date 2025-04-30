@@ -49,9 +49,10 @@ app.get("/books", async (request: Request, response: Response) => {
         console.log(request.query.genre, "request.query.genre");
 
         if (request.query.genre) {
-            const genre = request.query.genre
+            const genre = request.query.genre;
 
-            const filteredBooks = await database.all("SELECT * FROM books WHERE genre = ?",
+            const filteredBooks = await database.all(
+                "SELECT * FROM books WHERE genre = ?",
                 [genre]
             );
 
@@ -119,7 +120,7 @@ app.get("/bookcircles", async (request: Request, response: Response) => {
 });
 app.post("/bookcircles", async (request: Request, response: Response) => {
     try {
-        console.log(request.body, "info från form");
+        console.log(request.body, "info from form");
 
         let name = request.body.name;
         let schedule = request.body.schedule;
@@ -195,7 +196,7 @@ app.delete("/bookcircles/:id", async (request, response) => {
 });
 app.put("/profile", async (request, response) => {
     try {
-        console.log(request.body, "info från form");
+        console.log(request.body, "info from form");
 
         const name = request.body.name;
         const id = request.body.id;
@@ -229,7 +230,7 @@ app.put("/profile", async (request, response) => {
                 "UPDATE users SET name=?, address=?, image=? WHERE users_id=?",
                 [name, address, image, id]
             );
-            console.log(findUser, "uppdatering");
+            console.log(findUser, "update");
 
             response.status(200).send(findUser);
         } else {

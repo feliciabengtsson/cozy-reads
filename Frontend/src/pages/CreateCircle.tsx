@@ -72,7 +72,7 @@ function CreateCircle() {
                 body: JSON.stringify(formData)
             });
 
-            console.log(response, 'skickad till backend');
+            console.log(response, 'sent to backend');
             navigate('/bookcircles'); // Redirect to new page
         } catch (error) {
             console.error('error', error);

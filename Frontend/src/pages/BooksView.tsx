@@ -88,7 +88,7 @@ function BooksView() {
         fetch('http://localhost:8080/books')
             .then((response) => response.json())
             .then((result) => {
-                console.log(result, 'hämtade böcker');
+                console.log(result, 'fetched books');
                 setBooks(result.slice(0, 9));
             });
     }, []);
@@ -105,13 +105,13 @@ function BooksView() {
     };
 
     const handleFilter: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
-        const genre = event.target.value
+        const genre = event.target.value;
         setSelectedGenre(genre);
 
         fetch(`http://localhost:8080/books?genre=${genre}`)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result, 'selectedGenre ny fetch');
+                console.log(result, 'selectedGenre new fetch');
                 setBooks(result);
             });
     };

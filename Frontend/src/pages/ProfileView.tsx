@@ -141,13 +141,13 @@ function ProfileView() {
             .then((response) => response.json())
             .then((result: Book[]) => {
                 setBooks(result.slice(0, 3));
-                console.log(result.slice(0, 3), 'böcker');
+                console.log(result.slice(0, 3), 'books');
             });
         fetch('http://localhost:8080/bookcircles')
             .then((response) => response.json())
             .then((result: CircleType[]) => {
                 setCircles(result.slice(0, 2));
-                console.log(result.slice(0, 2), 'cirklar');
+                console.log(result.slice(0, 2), 'circles');
             });
         fetch('http://localhost:8080/profile')
             .then((response) => response.json())
@@ -169,16 +169,16 @@ function ProfileView() {
             <CircleContainer>
                 {circles.map((circle) => (
                     <Link to={`/bookcircles/${circle.circles_id}`}>
-                    <CircleWrapper key={circle.circles_id}>
-                        <ImageWrapper>
-                            <CircleImage src={circle.image} alt="Circle image" />
-                            <BookCover src={circle.cover_url} alt="Book-cover" />
-                        </ImageWrapper>
-                        <TextWrapper>
-                            <CircleName>{circle.name}</CircleName>
-                            <CircleMembers>Number of members</CircleMembers>
-                        </TextWrapper>
-                    </CircleWrapper>
+                        <CircleWrapper key={circle.circles_id}>
+                            <ImageWrapper>
+                                <CircleImage src={circle.image} alt="Circle image" />
+                                <BookCover src={circle.cover_url} alt="Book-cover" />
+                            </ImageWrapper>
+                            <TextWrapper>
+                                <CircleName>{circle.name}</CircleName>
+                                <CircleMembers>Number of members</CircleMembers>
+                            </TextWrapper>
+                        </CircleWrapper>
                     </Link>
                 ))}
             </CircleContainer>
