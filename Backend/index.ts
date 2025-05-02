@@ -8,6 +8,35 @@ import sqlite3 from "sqlite3";
 
 let database: Database;
 
+interface Book {
+    find: any;
+    books_id: number;
+    title: string;
+    author: string;
+    genre: string;
+    year: number;
+    cover_url: string;
+    summary: string;
+}
+interface Circle {
+    find: any;
+    some: any;
+    circles_id: number;
+    name: string;
+    meeting_schedule: string;
+    currently_reading: string;
+    latest_comment: string;
+    next_meetup: string;
+    image: string;
+    cover_url: string;
+}
+interface User {
+    users_id: number;
+    name: string;
+    address: string;
+    image: string;
+}
+
 (async () => {
     database = await sqlite.open({
         driver: sqlite3.Database,
@@ -28,9 +57,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get("/books/:id", async (request: Request, response: Response) => {
     try {
-        const books = await database.all("SELECT * FROM books");
-        let findBook = books.find(
-            (books) => books.book_id === Number(request.params.id)
+        const books: Book = await database.all("SELECT * FROM books");
+        let findBook: Book = books.find(
+            (books: { book_id: number; }) => books.book_id === Number(request.params.id)
         );
         console.log(findBook, "findBook");
 
@@ -51,7 +80,7 @@ app.get("/books", async (request: Request, response: Response) => {
         if (request.query.genre) {
             const genre = request.query.genre;
 
-            const filteredBooks = await database.all(
+            const filteredBooks: Book = await database.all(
                 "SELECT * FROM books WHERE genre = ?",
                 [genre]
             );
@@ -59,7 +88,7 @@ app.get("/books", async (request: Request, response: Response) => {
             console.log(filteredBooks, `books with genre: ${genre}`);
             response.status(200).send(filteredBooks);
         } else {
-            const books = await database.all("SELECT * FROM books");
+            const books: Book = await database.all("SELECT * FROM books");
 
             console.log(books, "books");
             response.status(200).send(books);
@@ -97,7 +126,7 @@ app.post("/books", async (request: Request, response: Response) => {
 });
 app.get("/bookcircles", async (request: Request, response: Response) => {
     try {
-        const circles = await database.all(
+        const circles: Circle = await database.all(
             `SELECT
                 circles.circles_id,
                 circles.name,
@@ -122,12 +151,12 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
     try {
         console.log(request.body, "info from form");
 
-        let name = request.body.name;
-        let schedule = request.body.schedule;
-        let image = request.body.image;
-        const circles = await database.all("SELECT * FROM circles");
+        let name: string = request.body.name;
+        let schedule: string = request.body.schedule;
+        let image: string = request.body.image;
+        const circles: Circle = await database.all("SELECT * FROM circles");
 
-        if (circles.some((circle) => circle.name === name) === true) {
+        if (circles.some((circle: { name: string; }) => circle.name === name) === true) {
             response.status(409).send("Conflict");
         } else if (
             name !== "" &&
@@ -151,7 +180,7 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
 });
 app.get("/bookcircles/:id", async (request: Request, response: Response) => {
     try {
-        const circles = await database.all(
+        const circles: Circle = await database.all(
             `SELECT
                 circles.circles_id,
                 circles.name,
@@ -165,7 +194,7 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
             LEFT JOIN books ON circles.currently_reading = books.book_id`
         );
         let findCircle = circles.find(
-            (circle) => circle.circles_id === Number(request.params.id)
+            (circle: { circles_id: number; }) => circle.circles_id === Number(request.params.id)
         );
         console.log(findCircle, "findCircle");
 
@@ -198,8 +227,8 @@ app.put("/profile", async (request, response) => {
     try {
         console.log(request.body, "info from form");
 
-        const name = request.body.name;
-        const id = request.body.id;
+        const name: string = request.body.name;
+        const id: number = request.body.id;
 
         const users = await database.all("SELECT * FROM users");
 
@@ -244,7 +273,7 @@ app.put("/profile", async (request, response) => {
 });
 app.get("/profile", async (request: Request, response: Response) => {
     try {
-        const members = await database.all("SELECT * FROM users");
+        const members: User = await database.all("SELECT * FROM users");
 
         console.log(members, "members");
         response.status(200).send(members);

@@ -7,6 +7,7 @@
 import styled from 'styled-components';
 import { useEffect, useState, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 const CirclesHeader = styled.h2`
     margin-left: auto;
@@ -73,7 +74,16 @@ const ContentSpan = styled.span`
     font-weight: 400;
     font-size: 14px;
 `;
-const DeleteCircleBtn = styled.button``;
+const DeleteCircleBtn = styled.button`
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem;
+    margin: 3rem auto;
+    cursor: pointer;
+    @media (min-width: 890px) {
+    }
+`;
 
 interface Circle {
     circles_id: number;
@@ -99,6 +109,7 @@ function BookCirclesGroup() {
         image: '',
         cover_url: ''
     });
+    const [alert, setAlert] = useState(false);
 
     const navigate = useNavigate();
     console.log(navigate, 'navigate');
@@ -120,6 +131,7 @@ function BookCirclesGroup() {
     const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>, circle: Circle) => {
         event.preventDefault(); // Prevents default form submission behavior
         console.log(circle.circles_id, 'delete');
+
         try {
             const response = await fetch(`http://localhost:8080/bookcircles/${circle.circles_id}`, {
                 method: 'DELETE'
@@ -166,9 +178,18 @@ function BookCirclesGroup() {
                         Next Meetup: <ContentSpan>{circle.next_meetup}</ContentSpan>
                     </ContentHeader>
                 </ContentCard>
-                <DeleteCircleBtn onClick={(event) => handleDelete(event, circle)}>
+                <DeleteCircleBtn
+                    onMouseEnter={() => setAlert(true)}
+                    onMouseLeave={() => setAlert(false)}
+                    onClick={(event) => handleDelete(event, circle)}
+                >
                     Delete Circle
                 </DeleteCircleBtn>
+                {alert && (
+                    <Alert variant="outlined" severity="warning">
+                        This action will delete your Book Circle. Do you wish to proceed?
+                    </Alert>
+                )}
             </ContentWrapper>
         </Fragment>
     );

@@ -48,6 +48,9 @@ const GlobalStyle = createGlobalStyle`
 		&:hover {
 			color: var(--color-accent) !important;
 		} 
+		&:visited {
+			color: var(--color-secondary) !important;
+		} 
 	}
 	label {
 		display: block;
