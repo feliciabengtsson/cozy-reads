@@ -18,7 +18,7 @@ const BooksDiv = styled.div`
     align-self: center;
     width: fit-content;
     height: fit-content;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     padding: 0.6rem;
     border-radius: 6px;
 `;

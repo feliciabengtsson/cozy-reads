@@ -13,14 +13,14 @@ const BannerWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #bfa58a;
+    background-color: var(--color-primary);
     width: 295px;
     height: 94px;
     @media (min-width: 890px) {
     }
 `;
 const AddInput = styled.input`
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     width: 14rem;
     border: none;
     border-radius: 15px;
@@ -35,7 +35,7 @@ const BtnWrapper = styled.div`
     }
 `;
 const CreateBtn = styled.input`
-    background-color: #bfa58a;
+    background-color: var(--color-primary);
     border: none;
     border-radius: 15px;
     padding: 0.5rem;

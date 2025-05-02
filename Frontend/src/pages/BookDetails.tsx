@@ -18,7 +18,7 @@ const CoverImg = styled.img`
     }
 `;
 const Genre = styled.span`
-    color: #8b5e3c;
+    color: var(--color-secondary);
     font-size: 0.7rem;
     background: rgba(191, 165, 138, 0.4);
     border-radius: 6px;

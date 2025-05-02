@@ -45,7 +45,7 @@ const CircleDiv = styled.div`
     align-self: center;
     width: fit-content;
     height: fit-content;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     padding: 0.6rem;
     border-radius: 6px;
 `;
@@ -73,8 +73,8 @@ const AddDiv = styled.div`
     position: absolute;
     right: 0.6rem;
     bottom: 5rem;
-    background-color: #8b5e3c;
-    color: #f5f1e7;
+    background-color: var(--color-secondary);
+    color: var(--color-background);
     border: none;
     height: 3.5rem;
     width: 3.5rem;

@@ -65,11 +65,11 @@ const ContentInner = styled.div`
     align-items: center;
 `;
 const ContentHeader = styled.h3`
-    color: #69472d;
+    color: var(--color-secondary);
     margin-left: 1rem;
 `;
 const ContentSpan = styled.span`
-    color: rgba(30, 30, 30, 0.9);
+    color: var(--color-neutral-dark);
     font-weight: 400;
     font-size: 14px;
 `;

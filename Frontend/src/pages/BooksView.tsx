@@ -14,7 +14,7 @@ const Form = styled.form`
     margin: 1rem auto;
     input,
     select {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: var(--color-neutral-light);
         border: none;
         border-radius: 15px;
         padding: 0.5rem;
@@ -39,7 +39,7 @@ const BooksDiv = styled.div`
     align-self: center;
     width: fit-content;
     height: fit-content;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     padding: 0.6rem;
     border-radius: 6px;
     @media (min-width: 890px) {

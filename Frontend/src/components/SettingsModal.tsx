@@ -14,7 +14,7 @@ const ModalContainer = styled.div`
 `;
 const ModalWrapper = styled.div`
     display: block;
-    background: #f5f1e7;
+    background: var(--color-background);
     width: 70%;
     max-width: 800px;
     height: 50%;
@@ -22,7 +22,7 @@ const ModalWrapper = styled.div`
     border-radius: 1rem;
 `;
 const CloseIcon = styled.span`
-    color: #3b3a30;
+    color: var(--color-accent);
     cursor: pointer;
 `;
 const IconWrapper = styled.div`
@@ -43,7 +43,7 @@ const ProfileImage = styled.img`
     }
 `;
 const Input = styled.input`
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     width: 10rem;
     border: none;
     border-radius: 15px;
@@ -59,7 +59,7 @@ const BtnWrapper = styled.div`
     }
 `;
 const EditBtn = styled.input`
-    background-color: #bfa58a;
+    background-color: var(--color-primary);
     border: none;
     border-radius: 15px;
     padding: 0.5rem;

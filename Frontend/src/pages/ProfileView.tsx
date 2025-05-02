@@ -33,7 +33,7 @@ const ProfileName = styled.p`
 const CircleContainer = styled.div`
     width: 20rem;
     height: 14rem;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--color-neutral-light);
     border-radius: 6px;
     padding: 0.6rem;
     margin: 10px auto 30px;
