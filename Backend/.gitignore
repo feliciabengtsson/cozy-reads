@@ -8,3 +8,5 @@ node_modules
 *.sqlite-journalnode_modules
 node_modules
 *.js
+dist
+dist
