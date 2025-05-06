@@ -59,7 +59,8 @@ app.get("/books/:id", async (request: Request, response: Response) => {
     try {
         const books: Book = await database.all("SELECT * FROM books");
         let findBook: Book = books.find(
-            (books: { book_id: number; }) => books.book_id === Number(request.params.id)
+            (books: { book_id: number }) =>
+                books.book_id === Number(request.params.id)
         );
         console.log(findBook, "findBook");
 
@@ -153,10 +154,13 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
 
         let name: string = request.body.name;
         let schedule: string = request.body.schedule;
-        let image: string = request.body.image;
+        let image: string | null = request.body.image;
         const circles: Circle = await database.all("SELECT * FROM circles");
 
-        if (circles.some((circle: { name: string; }) => circle.name === name) === true) {
+        if (
+            circles.some((circle: { name: string }) => circle.name === name) ===
+            true
+        ) {
             response.status(409).send("Conflict");
         } else if (
             name !== "" &&
@@ -164,12 +168,24 @@ app.post("/bookcircles", async (request: Request, response: Response) => {
             schedule !== null &&
             name !== ""
         ) {
-            await database.run(
-                "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",
-                [name, schedule, image]
-            );
-            console.log("lyckat");
-            response.status(201).send("Created");
+            if (image === "") {
+                image = null;
+            }
+            if (image) {
+                await database.run(
+                    "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",
+                    [name, schedule, image]
+                );
+                console.log("lyckat");
+                response.status(201).send("Created");
+            } else {
+                await database.run(
+                    "INSERT INTO circles (name, meeting_schedule) VALUES (?, ?)",
+                    [name, schedule]
+                );
+                console.log("lyckat");
+                response.status(201).send("Created");
+            }
         } else {
             response.status(400).send("Bad Request");
         }
@@ -194,7 +210,8 @@ app.get("/bookcircles/:id", async (request: Request, response: Response) => {
             LEFT JOIN books ON circles.currently_reading = books.book_id`
         );
         let findCircle = circles.find(
-            (circle: { circles_id: number; }) => circle.circles_id === Number(request.params.id)
+            (circle: { circles_id: number }) =>
+                circle.circles_id === Number(request.params.id)
         );
         console.log(findCircle, "findCircle");
 
