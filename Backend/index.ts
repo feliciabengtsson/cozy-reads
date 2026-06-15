@@ -1,52 +1,43 @@
-/* https://www.quackit.com/sqlite/tutorial/delete_data.cfm
- */
 import cors from "cors";
 import express, { Request, Response } from "express";
-import * as sqlite from "sqlite";
-import { Database } from "sqlite";
-import sqlite3 from "sqlite3";
-
-let database: Database;
+import { Pool } from "pg";
 
 interface Book {
-    find: any;
-    books_id: number;
-    title: string;
-    author: string;
-    genre: string;
-    year: number;
-    cover_url: string;
-    summary: string;
+  book_id: number;
+  title: string;
+  author: string;
+  genre: string;
+  year: number;
+  cover_url: string;
+  summary: string;
 }
+
 interface Circle {
-    find: any;
-    some: any;
-    circles_id: number;
-    name: string;
-    meeting_schedule: string;
-    currently_reading: string;
-    latest_comment: string;
-    next_meetup: string;
-    image: string;
-    cover_url: string;
+  circles_id: number;
+  name: string;
+  meeting_schedule: string;
+  currently_reading: string;
+  latest_comment: string;
+  next_meetup: string;
+  image: string;
+  cover_url: string;
 }
+
 interface User {
-    users_id: number;
-    name: string;
-    address: string;
-    image: string;
+  users_id: number;
+  name: string;
+  address: string;
+  image: string;
 }
 
-(async () => {
-    database = await sqlite.open({
-        driver: sqlite3.Database,
-        filename: "test.sqlite",
-    });
+const database = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
-    await database.run("PRAGMA foreign_keys = ON");
-
-    console.log("Redo att göra databasanrop");
-})();
+console.log("Redo att göra databasanrop mot Neon");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -56,258 +47,261 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/books/:id", async (request: Request, response: Response) => {
-    try {
-        const books: Book = await database.all("SELECT * FROM books");
-        let findBook: Book = books.find(
-            (books: { book_id: number }) =>
-                books.book_id === Number(request.params.id)
-        );
-        console.log(findBook, "findBook");
+  try {
+    const result = await database.query<Book>(
+      "SELECT * FROM books WHERE book_id = $1",
+      [request.params.id],
+    );
 
-        if (findBook) {
-            response.status(200).send(findBook);
-        } else {
-            response.status(404).send("Not Found");
-        }
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+    const book = result.rows[0];
+
+    if (book) {
+      response.status(200).send(book);
+    } else {
+      response.status(404).send("Not Found");
     }
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.get("/books", async (request: Request, response: Response) => {
-    try {
-        console.log(request.query.genre, "request.query.genre");
+  try {
+    const genre = request.query.genre;
 
-        if (request.query.genre) {
-            const genre = request.query.genre;
+    if (genre) {
+      const result = await database.query<Book>(
+        "SELECT * FROM books WHERE genre = $1",
+        [genre],
+      );
 
-            const filteredBooks: Book = await database.all(
-                "SELECT * FROM books WHERE genre = ?",
-                [genre]
-            );
+      response.status(200).send(result.rows);
+    } else {
+      const result = await database.query<Book>("SELECT * FROM books");
 
-            console.log(filteredBooks, `books with genre: ${genre}`);
-            response.status(200).send(filteredBooks);
-        } else {
-            const books: Book = await database.all("SELECT * FROM books");
-
-            console.log(books, "books");
-            response.status(200).send(books);
-        }
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+      response.status(200).send(result.rows);
     }
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.post("/books", async (request: Request, response: Response) => {
-    try {
-        const newBook = await database.run(
-            "INSERT INTO books (book_id, title, author, genre, year, cover_url, summary) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [
-                request.body.book_id,
-                request.body.title,
-                request.body.author,
-                request.body.genre,
-                request.body.year,
-                request.body.cover_url,
-                request.body.summary,
-            ]
-        );
+  try {
+    const result = await database.query<Book>(
+      `
+      INSERT INTO books 
+        (title, author, genre, year, cover_url, summary) 
+      VALUES 
+        ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+      `,
+      [
+        request.body.title,
+        request.body.author,
+        request.body.genre,
+        request.body.year,
+        request.body.cover_url,
+        request.body.summary,
+      ],
+    );
 
-        const addedBook = await database.get(
-            "SELECT * FROM books WHERE id = ?",
-            newBook.lastID
-        );
-        console.log(addedBook, "addedBook");
-        response.status(201).send(addedBook);
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
-    }
+    response.status(201).send(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.get("/bookcircles", async (request: Request, response: Response) => {
-    try {
-        const circles: Circle = await database.all(
-            `SELECT
-                circles.circles_id,
-                circles.name,
-                books.title AS currently_reading,
-                books.cover_url AS cover_url,
-                circles.meeting_schedule,
-                circles.latest_comment,
-                circles.next_meetup,
-                circles.image
-            FROM circles
-            LEFT JOIN books ON circles.currently_reading = books.book_id`
-        );
+  try {
+    const result = await database.query<Circle>(
+      `
+      SELECT
+        circles.circles_id,
+        circles.name,
+        books.title AS currently_reading,
+        books.cover_url AS cover_url,
+        circles.meeting_schedule,
+        circles.latest_comment,
+        circles.next_meetup,
+        circles.image
+      FROM circles
+      LEFT JOIN books ON circles.currently_reading = books.book_id
+      `,
+    );
 
-        console.log(circles, "books");
-        response.status(200).send(circles);
-    } catch (error) {
-        console.log(error);
-        response.status(500).send("error");
-    }
+    response.status(200).send(result.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.post("/bookcircles", async (request: Request, response: Response) => {
-    try {
-        console.log(request.body, "info from form");
+  try {
+    const name: string = request.body.name;
+    const schedule: string = request.body.schedule;
+    let image: string | null = request.body.image;
 
-        let name: string = request.body.name;
-        let schedule: string = request.body.schedule;
-        let image: string | null = request.body.image;
-        const circles: Circle = await database.all("SELECT * FROM circles");
-
-        if (
-            circles.some((circle: { name: string }) => circle.name === name) ===
-            true
-        ) {
-            response.status(409).send("Conflict");
-        } else if (
-            name !== "" &&
-            name !== null &&
-            schedule !== null &&
-            name !== ""
-        ) {
-            if (image === "") {
-                image = null;
-            }
-            if (image) {
-                await database.run(
-                    "INSERT INTO circles (name, meeting_schedule, image) VALUES (?, ?, ?)",
-                    [name, schedule, image]
-                );
-                console.log("lyckat");
-                response.status(201).send("Created");
-            } else {
-                await database.run(
-                    "INSERT INTO circles (name, meeting_schedule) VALUES (?, ?)",
-                    [name, schedule]
-                );
-                console.log("lyckat");
-                response.status(201).send("Created");
-            }
-        } else {
-            response.status(400).send("Bad Request");
-        }
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+    if (!name || !schedule) {
+      response.status(400).send("Bad Request");
+      return;
     }
+
+    const existingCircle = await database.query<Circle>(
+      "SELECT * FROM circles WHERE name = $1",
+      [name],
+    );
+
+    if (existingCircle.rows.length > 0) {
+      response.status(409).send("Conflict");
+      return;
+    }
+
+    if (image === "") {
+      image = null;
+    }
+
+    let result;
+
+    if (image) {
+      result = await database.query<Circle>(
+        `
+        INSERT INTO circles 
+          (name, meeting_schedule, image) 
+        VALUES 
+          ($1, $2, $3)
+        RETURNING *
+        `,
+        [name, schedule, image],
+      );
+    } else {
+      result = await database.query<Circle>(
+        `
+        INSERT INTO circles 
+          (name, meeting_schedule) 
+        VALUES 
+          ($1, $2)
+        RETURNING *
+        `,
+        [name, schedule],
+      );
+    }
+
+    response.status(201).send(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.get("/bookcircles/:id", async (request: Request, response: Response) => {
-    try {
-        const circles: Circle = await database.all(
-            `SELECT
-                circles.circles_id,
-                circles.name,
-                books.title AS currently_reading,
-                books.cover_url AS cover_url,
-                circles.meeting_schedule,
-                circles.latest_comment,
-                circles.next_meetup,
-                circles.image
-            FROM circles
-            LEFT JOIN books ON circles.currently_reading = books.book_id`
-        );
-        let findCircle = circles.find(
-            (circle: { circles_id: number }) =>
-                circle.circles_id === Number(request.params.id)
-        );
-        console.log(findCircle, "findCircle");
+  try {
+    const result = await database.query<Circle>(
+      `
+      SELECT
+        circles.circles_id,
+        circles.name,
+        books.title AS currently_reading,
+        books.cover_url AS cover_url,
+        circles.meeting_schedule,
+        circles.latest_comment,
+        circles.next_meetup,
+        circles.image
+      FROM circles
+      LEFT JOIN books ON circles.currently_reading = books.book_id
+      WHERE circles.circles_id = $1
+      `,
+      [request.params.id],
+    );
 
-        if (findCircle) {
-            response.status(200).send(findCircle);
-        } else {
-            response.status(404).send("Not Found");
-        }
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+    const circle = result.rows[0];
+
+    if (circle) {
+      response.status(200).send(circle);
+    } else {
+      response.status(404).send("Not Found");
     }
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
-app.delete("/bookcircles/:id", async (request, response) => {
-    try {
-        await database.run("DELETE FROM book_circles WHERE circle_id=?", [
-            request.params.id,
-        ]);
-        await database.run("DELETE FROM circles WHERE circles_id=?", [
-            request.params.id,
-        ]);
 
-        response.status(200).send("ok");
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+app.delete("/bookcircles/:id", async (request: Request, response: Response) => {
+  try {
+    await database.query("DELETE FROM book_circles WHERE circle_id = $1", [
+      request.params.id,
+    ]);
+
+    await database.query("DELETE FROM circles WHERE circles_id = $1", [
+      request.params.id,
+    ]);
+
+    response.status(200).send("ok");
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
+});
+
+app.put("/profile", async (request: Request, response: Response) => {
+  try {
+    const name: string = request.body.name;
+    const id: number = request.body.id;
+
+    if (!name || !id || Object.keys(request.body).length > 2) {
+      response.status(400).send("Bad Request");
+      return;
     }
-});
-app.put("/profile", async (request, response) => {
-    try {
-        console.log(request.body, "info from form");
 
-        const name: string = request.body.name;
-        const id: number = request.body.id;
+    const userResult = await database.query<User>(
+      "SELECT * FROM users WHERE users_id = $1",
+      [id],
+    );
 
-        const users = await database.all("SELECT * FROM users");
+    const user = userResult.rows[0];
 
-        const findUser = users.find((user) => user.users_id === id);
-        console.log(findUser, "findUser");
-
-        const address = findUser.address;
-        const image = findUser.image;
-        if (
-            !name ||
-            !address ||
-            !id ||
-            !image ||
-            Object.keys(request.body).length > 4
-        ) {
-            console.log("Bad Request");
-            response.status(400).send("Bad Request");
-        } else if (
-            id !== null &&
-            name !== "" &&
-            name !== null &&
-            address !== "" &&
-            address !== null &&
-            image !== "" &&
-            image !== null
-        ) {
-            await database.run(
-                "UPDATE users SET name=?, address=?, image=? WHERE users_id=?",
-                [name, address, image, id]
-            );
-            console.log(findUser, "update");
-
-            response.status(200).send(findUser);
-        } else {
-            console.log("Bad Request");
-            response.status(400).send("Bad Request");
-        }
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
+    if (!user) {
+      response.status(404).send("Not Found");
+      return;
     }
+
+    const updatedUser = await database.query<User>(
+      `
+      UPDATE users 
+      SET name = $1, address = $2, image = $3 
+      WHERE users_id = $4
+      RETURNING *
+      `,
+      [name, user.address, user.image, id],
+    );
+
+    response.status(200).send(updatedUser.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.get("/profile", async (request: Request, response: Response) => {
-    try {
-        const members: User = await database.all("SELECT * FROM users");
+  try {
+    const result = await database.query<User>("SELECT * FROM users");
 
-        console.log(members, "members");
-        response.status(200).send(members);
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
-    }
+    response.status(200).send(result.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("error");
+  }
 });
+
 app.get("/", async (request: Request, response: Response) => {
-    try {
-        response.status(200).send("ok");
-    } catch (error) {
-        console.error(error);
-        response.status(500).send("error");
-    }
+  response.status(200).send("ok");
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
