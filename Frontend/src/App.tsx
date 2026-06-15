@@ -13,7 +13,6 @@ import ProfileView from './pages/ProfileView';
 import BookDetails from './pages/BookDetails';
 import BookCirclesGroup from './pages/BookCirclesGroup';
 import CreateCircle from './pages/CreateCircle';
-import React from 'react';
 
 const Div = styled.div`
     width: 300px;
