@@ -1,6 +1,6 @@
 /* https://www.quackit.com/sqlite/tutorial/delete_data.cfm
  */
-import cors from "cors";
+/* import cors from "cors";
 import express, { Request, Response } from "express";
 import * as sqlite from "sqlite";
 import { Database } from "sqlite";
@@ -311,3 +311,4 @@ app.get("/", async (request: Request, response: Response) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
+ */
