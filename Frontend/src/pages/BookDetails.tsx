@@ -3,6 +3,8 @@ import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Title = styled.h2`
     margin: 0;
 `;
@@ -50,7 +52,7 @@ function BookDetails() {
 
     useEffect(() => {
         if (bookId !== undefined) {
-            fetch(`http://localhost:8080/books/${bookId}`)
+            fetch(`${API_URL}/books/${bookId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data, 'result');

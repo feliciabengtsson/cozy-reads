@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import MyBooksContext from '../MyBooksContext';
 import MyBooks from '../components/MyBooks';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ProfileWrapper = styled.div`
     display: flex;
     justify-content: center;
@@ -137,19 +139,19 @@ function ProfileView() {
     const [users, setUsers] = useState<UserType[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/books')
+        fetch(`${API_URL}/books`)
             .then((response) => response.json())
             .then((result: Book[]) => {
                 setBooks(result.slice(0, 3));
                 console.log(result.slice(0, 3), 'books');
             });
-        fetch('http://localhost:8080/bookcircles')
+        fetch(`${API_URL}/bookcircles`)
             .then((response) => response.json())
             .then((result: CircleType[]) => {
                 setCircles(result.slice(0, 2));
                 console.log(result.slice(0, 2), 'circles');
             });
-        fetch('http://localhost:8080/profile')
+        fetch(`${API_URL}/profile`)
             .then((response) => response.json())
             .then((result: UserType[]) => {
                 setUsers(result.slice(0, 1));

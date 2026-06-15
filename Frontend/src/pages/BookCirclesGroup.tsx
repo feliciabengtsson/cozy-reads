@@ -9,6 +9,8 @@ import { useEffect, useState, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const CirclesHeader = styled.h2`
     margin-left: auto;
     margin-right: auto;
@@ -116,7 +118,7 @@ function BookCirclesGroup() {
 
     useEffect(() => {
         if (circleId !== undefined) {
-            fetch(`http://localhost:8080/bookcircles/${circleId}`)
+            fetch(`${API_URL}/${circleId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data, 'result');
@@ -133,7 +135,7 @@ function BookCirclesGroup() {
         console.log(circle.circles_id, 'delete');
 
         try {
-            const response = await fetch(`http://localhost:8080/bookcircles/${circle.circles_id}`, {
+            const response = await fetch(`${API_URL}/bookcircles/${circle.circles_id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {

@@ -1,6 +1,8 @@
 /* https://www.shecodes.io/athena/53051-how-to-submit-a-form-and-redirect-to-another-page-in-react
  */
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 import styled from 'styled-components';
 import { useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -64,7 +66,7 @@ function CreateCircle() {
         event.preventDefault(); // Prevents default form submission behavior
 
         try {
-            const response = await fetch('http://localhost:8080/bookcircles', {
+            const response = await fetch(`${API_URL}/bookcircles`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

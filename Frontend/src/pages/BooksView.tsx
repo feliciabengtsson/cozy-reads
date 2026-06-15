@@ -7,6 +7,8 @@ import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Form = styled.form`
     display: flex;
     justify-content: space-between;
@@ -85,7 +87,7 @@ function BooksView() {
     const [selectedGenre, setSelectedGenre] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8080/books')
+        fetch(`${API_URL}/books`)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result, 'fetched books');
@@ -108,7 +110,7 @@ function BooksView() {
         const genre = event.target.value;
         setSelectedGenre(genre);
 
-        fetch(`http://localhost:8080/books?genre=${genre}`)
+        fetch(`${API_URL}/books?genre=${genre}`)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result, 'selectedGenre new fetch');

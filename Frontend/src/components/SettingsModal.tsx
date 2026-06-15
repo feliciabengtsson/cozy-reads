@@ -1,6 +1,8 @@
 import { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ModalContainer = styled.div`
     width: 100vw;
     height: 100vh;
@@ -90,7 +92,7 @@ function SettingsModal(props: Modal) {
     const [users, setUsers] = useState<UserType[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/profile')
+        fetch(`${API_URL}/profile`)
             .then((response) => response.json())
             .then((result: UserType[]) => {
                 setUsers(result.slice(0, 1));
@@ -108,7 +110,7 @@ function SettingsModal(props: Modal) {
         console.log(updatedUser, 'updated user');
 
         try {
-            const response = await fetch('http://localhost:8080/profile', {
+            const response = await fetch(`${API_URL}/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,7 +122,7 @@ function SettingsModal(props: Modal) {
                 setUsers([updated]);
                 setFormData({ name: '' }); //empty inputfield
 
-                fetch('http://localhost:8080/profile')
+                fetch(`${API_URL}/profile`)
                     .then((response) => response.json())
                     .then((result: UserType[]) => {
                         setUsers(result.slice(0, 1));
