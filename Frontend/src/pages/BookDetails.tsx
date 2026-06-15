@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 const Title = styled.h2`
     margin: 0;

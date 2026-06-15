@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import BookCirclesBanner from '../assets/images/bookbanner.jpg';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 const Header = styled.h2`
     @media (min-width: 890px) {

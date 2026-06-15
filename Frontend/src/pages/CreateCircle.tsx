@@ -1,7 +1,7 @@
 /* https://www.shecodes.io/athena/53051-how-to-submit-a-form-and-redirect-to-another-page-in-react
  */
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 import styled from 'styled-components';
 import { useState, Fragment } from 'react';

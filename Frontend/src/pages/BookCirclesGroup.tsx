@@ -8,8 +8,7 @@ import styled from 'styled-components';
 import { useEffect, useState, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 const CirclesHeader = styled.h2`
     margin-left: auto;

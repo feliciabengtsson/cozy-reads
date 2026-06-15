@@ -1,7 +1,6 @@
 import { useEffect, useState, Fragment } from 'react';
 import styled from 'styled-components';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 const ModalContainer = styled.div`
     width: 100vw;

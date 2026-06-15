@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../api/api';
 
 const Form = styled.form`
     display: flex;

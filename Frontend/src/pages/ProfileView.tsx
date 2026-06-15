@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../api/api';
 
 import MyBooksContext from '../MyBooksContext';
 import MyBooks from '../components/MyBooks';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const ProfileWrapper = styled.div`
     display: flex;
