@@ -10,18 +10,26 @@ import { API_URL } from '../api/api';
 
 const Form = styled.form`
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 0.6rem;
     margin: 1rem auto;
     input,
     select {
         background-color: var(--color-neutral-light);
         border: none;
         border-radius: 15px;
-        padding: 0.5rem;
+        padding: 0.5rem 0.8rem;
+    }
+    input {
+        flex: 1 1 10rem;
+        min-width: 0;
     }
     select {
-        width: 6rem;
+        flex: 0 0 auto;
+        max-width: 100%;
+        cursor: pointer;
     }
 `;
 const BooksContainer = styled.div`
@@ -36,35 +44,30 @@ const BooksContainer = styled.div`
 const BooksDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    align-self: center;
-    width: fit-content;
-    height: fit-content;
+    gap: 0.8rem;
+    width: 100%;
     background-color: var(--color-neutral-light);
-    padding: 0.6rem;
+    padding: 0.8rem;
     border-radius: 6px;
-    @media (min-width: 890px) {
+    @media (min-width: 600px) {
         grid-template-columns: repeat(5, 1fr);
     }
 `;
 const BooksCard = styled.div`
-    width: 5.5rem;
-    height: 7rem;
+    aspect-ratio: 2 / 3;
     background-color: #f5f1e7c3;
-    margin: 10px;
-    @media (min-width: 890px) {
-        width: 7.5rem;
-        height: 9.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    &:hover {
+        transform: translateY(-3px);
     }
 `;
 const BookCover = styled.img`
-    width: 5.5rem;
-    height: 7rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     cursor: pointer;
-    @media (min-width: 890px) {
-        width: 7.5rem;
-        height: 9.5rem;
-    }
 `;
 
 interface BookType {
@@ -109,7 +112,11 @@ function BooksView() {
         const genre = event.target.value;
         setSelectedGenre(genre);
 
-        fetch(`${API_URL}/books?genre=${genre}`)
+        const url = genre
+            ? `${API_URL}/books?genre=${encodeURIComponent(genre)}`
+            : `${API_URL}/books`;
+
+        fetch(url)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result, 'selectedGenre new fetch');
@@ -128,36 +135,31 @@ function BooksView() {
                 </p>
                 <p>💬 Discussion Starts: 25th of each month</p>
                 <Form>
-                    <div>
-                        <input
-                            value={search}
-                            onChange={onChangeHandler}
-                            type="text"
-                            name="filter-book"
-                            placeholder="Search for books"
-                        />
-                    </div>
-                    <div>
-                        <label>
-                            <select
-                                onChange={handleFilter}
-                                value={selectedGenre}
-                                name="SelectedGenre"
-                                defaultValue="Genres"
-                            >
-                                <option value="Genres">Genres</option>
-                                <option value="Classic Fiction">Classic Fiction</option>
-                                <option value="Dystopian">Dystopian</option>
-                                <option value="Fantasy">Fantasy</option>
-                                <option value="Young Adult">Young Adult</option>
-                                <option value="Romance">Romance</option>
-                                <option value="Adventure">Adventure</option>
-                                <option value="Thriller">Thriller</option>
-                                <option value="Horror">Horror</option>
-                                <option value="Science Fiction">Science Fiction</option>
-                            </select>
-                        </label>
-                    </div>
+                    <input
+                        value={search}
+                        onChange={onChangeHandler}
+                        type="text"
+                        name="filter-book"
+                        placeholder="Search for books"
+                        aria-label="Search for books"
+                    />
+                    <select
+                        onChange={handleFilter}
+                        value={selectedGenre}
+                        name="SelectedGenre"
+                        aria-label="Filter by genre"
+                    >
+                        <option value="">All genres</option>
+                        <option value="Classic Fiction">Classic Fiction</option>
+                        <option value="Dystopian">Dystopian</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Young Adult">Young Adult</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                    </select>
                 </Form>
             </section>
             <BooksContainer>

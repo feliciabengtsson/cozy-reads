@@ -3,23 +3,23 @@ import styled from 'styled-components';
 import { API_URL } from '../api/api';
 
 const ModalContainer = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    padding: 1rem;
+    z-index: 100;
 `;
 const ModalWrapper = styled.div`
     display: block;
     background: var(--color-background);
-    width: 70%;
-    max-width: 800px;
-    height: 50%;
-    padding: 1rem;
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 1rem 1.5rem 1.5rem;
     border-radius: 1rem;
 `;
 const CloseIcon = styled.span`
@@ -39,25 +39,21 @@ const ProfileImage = styled.img`
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
+    object-fit: cover;
     margin-top: 1.5rem;
-    @media (min-width: 890px) {
-    }
 `;
 const Input = styled.input`
     background-color: var(--color-neutral-light);
-    width: 10rem;
+    width: 100%;
+    max-width: 16rem;
     border: none;
     border-radius: 15px;
     padding: 0.5rem;
     margin-top: 1rem;
-    @media (min-width: 890px) {
-    }
 `;
 const BtnWrapper = styled.div`
     display: flex;
     margin: 1rem;
-    @media (min-width: 890px) {
-    }
 `;
 const EditBtn = styled.input`
     background-color: var(--color-primary);
@@ -66,8 +62,6 @@ const EditBtn = styled.input`
     padding: 0.5rem;
     margin: auto;
     cursor: pointer;
-    @media (min-width: 890px) {
-    }
 `;
 
 interface Modal {
@@ -169,6 +163,7 @@ function SettingsModal(props: Modal) {
                                     <ProfileImage src={user.image} alt="Profile image" />
                                     <label htmlFor="name">Name: {user.name}</label>
                                     <Input
+                                        id="name"
                                         name="name"
                                         onChange={handleInputChange}
                                         type="text"

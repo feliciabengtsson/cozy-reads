@@ -8,13 +8,15 @@ import SettingsModal from './SettingsModal';
 
 const NavTop = styled.nav`
     background-color: var(--color-primary);
-    height: 3.5rem;
+    height: var(--nav-height);
 `;
 const NavDivTop = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 3.5rem;
+    height: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
 `;
 const LogoDiv = styled.div`
     margin: 0 0.5rem;
@@ -25,12 +27,15 @@ const Logo = styled.img`
 const IconList = styled.ul`
     display: flex;
     list-style: none;
+    margin: 0;
+    padding: 0;
 `;
 const Li = styled.li`
     margin: 0 0.8rem;
 `;
 const ModalIcon = styled.span`
     cursor: pointer;
+    user-select: none;
 `;
 
 function NavigationTop() {
@@ -48,7 +53,7 @@ function NavigationTop() {
                     </LogoDiv>
                     <IconList>
                         <Li>
-                            <Link to="profile">
+                            <Link to="/profile" aria-label="Profile">
                                 <span className="material-symbols-outlined">account_circle</span>
                             </Link>
                         </Li>

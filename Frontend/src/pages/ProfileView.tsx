@@ -14,25 +14,22 @@ const ProfileWrapper = styled.div`
     margin: 2rem auto 3rem;
     gap: 1rem;
     width: fit-content;
-    @media (min-width: 890px) {
-    }
 `;
 const ProfileImage = styled.img`
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    @media (min-width: 890px) {
-    }
+    object-fit: cover;
 `;
 const ProfileName = styled.p`
     color: var(--color-secondary);
-    font-size: 36px;
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
     font-weight: 400;
-    @media (min-width: 890px) {
-    }
+    margin: 0;
 `;
 const CircleContainer = styled.div`
-    width: 20rem;
+    width: 100%;
+    max-width: 28rem;
     height: 14rem;
     background-color: var(--color-neutral-light);
     border-radius: 6px;
@@ -42,23 +39,20 @@ const CircleContainer = styled.div`
 
     --fade-start: 90%;
     mask-image: linear-gradient(to bottom, white var(--fade-start), transparent);
-    @media (min-width: 890px) {
-    }
+`;
+const CircleLink = styled(Link)`
+    text-decoration: none;
 `;
 const CircleWrapper = styled.div`
     display: flex;
     align-items: flex-start;
-    width: 18rem;
+    width: 100%;
     height: fit-content;
     margin: 0 auto 20px;
     gap: 0.8rem;
-    @media (min-width: 890px) {
-    }
 `;
 const ImageWrapper = styled.div`
     position: relative;
-    @media (min-width: 890px) {
-    }
 `;
 const CircleImage = styled.img`
     width: 80px;
@@ -66,8 +60,6 @@ const CircleImage = styled.img`
     object-fit: contain;
     margin: 5px auto;
     opacity: 30%;
-    @media (min-width: 890px) {
-    }
 `;
 const BookCover = styled.img`
     display: block;
@@ -81,8 +73,6 @@ const BookCover = styled.img`
     height: 65px;
     object-fit: contain;
     margin: auto;
-    @media (min-width: 890px) {
-    }
 `;
 const TextWrapper = styled.div`
     display: flex;
@@ -90,20 +80,14 @@ const TextWrapper = styled.div`
     justify-content: space-between;
     flex: 1;
     height: 95px;
-    @media (min-width: 890px) {
-    }
 `;
 const CircleName = styled.h3`
     font-size: 0.9rem;
     margin: 0;
-    @media (min-width: 890px) {
-    }
 `;
 const CircleMembers = styled.p`
     font-size: 0.8rem;
     margin: 0;
-    @media (min-width: 890px) {
-    }
 `;
 
 interface Book {
@@ -161,7 +145,7 @@ function ProfileView() {
     return (
         <Fragment>
             {users.map((user) => (
-                <ProfileWrapper>
+                <ProfileWrapper key={user.users_id}>
                     <ProfileImage src={user.image} alt="Profile picture" />
                     <ProfileName>{user.name}</ProfileName>
                 </ProfileWrapper>
@@ -169,8 +153,8 @@ function ProfileView() {
             <h3>My Circles:</h3>
             <CircleContainer>
                 {circles.map((circle) => (
-                    <Link to={`/bookcircles/${circle.circles_id}`}>
-                        <CircleWrapper key={circle.circles_id}>
+                    <CircleLink key={circle.circles_id} to={`/bookcircles/${circle.circles_id}`}>
+                        <CircleWrapper>
                             <ImageWrapper>
                                 <CircleImage src={circle.image} alt="Circle image" />
                                 <BookCover src={circle.cover_url} alt="Book-cover" />
@@ -180,7 +164,7 @@ function ProfileView() {
                                 <CircleMembers>Number of members</CircleMembers>
                             </TextWrapper>
                         </CircleWrapper>
-                    </Link>
+                    </CircleLink>
                 ))}
             </CircleContainer>
             <MyBooksContext.Provider value={{ books, setBooks }}>

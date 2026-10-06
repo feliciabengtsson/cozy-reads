@@ -17,11 +17,11 @@ const ImgWrapper = styled.div`
     align-items: center;
 `;
 const Img = styled.img`
-    width: 100vw;
+    width: 100%;
     height: 7rem;
     object-fit: cover;
+    border-radius: 6px;
     @media (min-width: 890px) {
-        width: 50vw;
         height: 9rem;
     }
 `;
@@ -42,38 +42,36 @@ const CircleContainer = styled.div`
 const CircleDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    align-self: center;
-    width: fit-content;
-    height: fit-content;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 28rem;
     background-color: var(--color-neutral-light);
-    padding: 0.6rem;
+    padding: 0.8rem;
     border-radius: 6px;
 `;
 const CircleCard = styled.div`
-    width: 5.5rem;
-    height: 7rem;
-    margin: 5px 5px;
-    @media (min-width: 890px) {
-        width: 8rem;
-        height: 9.5rem;
+    aspect-ratio: 4 / 5;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    &:hover {
+        transform: translateY(-3px);
     }
 `;
 const CircleImage = styled.img`
-    width: 5.5rem;
-    height: 7rem;
-    @media (min-width: 890px) {
-        width: 8rem;
-        height: 9.5rem;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 const AddDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    right: 0.6rem;
-    bottom: 5rem;
+    position: fixed;
+    right: 1rem;
+    bottom: calc(var(--nav-height) + 1rem);
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     background-color: var(--color-secondary);
     color: var(--color-background);
     border: none;
@@ -140,7 +138,7 @@ function BookCirclesView() {
                 </section>
                 <section id="add-circle">
                     <AddDiv>
-                        <Link to={`/bookcircles/add`}>
+                        <Link to={`/bookcircles/add`} aria-label="Create book circle">
                             <span className="material-symbols-outlined">add</span>
                         </Link>
                     </AddDiv>

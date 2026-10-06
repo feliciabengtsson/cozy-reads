@@ -21,11 +21,11 @@ const ImgWrapper = styled.div`
     align-items: center;
 `;
 const Img = styled.img`
-    width: 100vw;
+    width: 100%;
     height: 7rem;
     object-fit: cover;
+    border-radius: 6px;
     @media (min-width: 890px) {
-        width: 50vw;
         height: 9rem;
     }
 `;
@@ -36,15 +36,16 @@ const ContentWrapper = styled.div`
 `;
 const ContentCard = styled.div`
     position: relative;
-    width: 19rem;
-    height: 4rem;
+    width: 100%;
+    max-width: 27rem;
+    min-height: 4rem;
     margin-top: 20px;
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.6);
-    vertical-align: center;
-    @media (min-width: 890px) {
-        width: 27rem;
-    }
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
 `;
 const BookImage = styled.div`
     position: absolute;
@@ -56,8 +57,6 @@ const BookImage = styled.div`
     background-position: center;
     z-index: -1;
     border-radius: 6px;
-    @media (min-width: 890px) {
-    }
 `;
 const ContentInner = styled.div`
     position: relative;
@@ -68,7 +67,7 @@ const ContentInner = styled.div`
 `;
 const ContentHeader = styled.h3`
     color: var(--color-secondary);
-    margin-left: 1rem;
+    margin: 0.8rem 1rem;
 `;
 const ContentSpan = styled.span`
     color: var(--color-neutral-dark);
@@ -79,11 +78,9 @@ const DeleteCircleBtn = styled.button`
     background-color: var(--color-primary);
     border: none;
     border-radius: 15px;
-    padding: 0.5rem;
-    margin: 3rem auto;
+    padding: 0.5rem 1rem;
+    margin: 3rem auto 1rem;
     cursor: pointer;
-    @media (min-width: 890px) {
-    }
 `;
 
 interface Circle {
@@ -117,7 +114,7 @@ function BookCirclesGroup() {
 
     useEffect(() => {
         if (circleId !== undefined) {
-            fetch(`${API_URL}/${circleId}`)
+            fetch(`${API_URL}/bookcircles/${circleId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data, 'result');

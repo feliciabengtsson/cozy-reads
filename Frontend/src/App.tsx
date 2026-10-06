@@ -14,9 +14,11 @@ import BookDetails from './pages/BookDetails';
 import BookCirclesGroup from './pages/BookCirclesGroup';
 import CreateCircle from './pages/CreateCircle';
 
-const Div = styled.div`
-    width: 300px;
-    margin: auto;
+const Div = styled.main`
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 1rem calc(var(--nav-height) + 2rem);
 `;
 
 function App() {

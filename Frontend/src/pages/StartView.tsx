@@ -8,11 +8,11 @@ const ImgWrapper = styled.div`
     align-items: center;
 `;
 const Img = styled.img`
-    width: 100vw;
+    width: 100%;
     height: 7rem;
     object-fit: cover;
+    border-radius: 6px;
     @media (min-width: 890px) {
-        width: 50vw;
         height: 9rem;
     }
 `;

@@ -2,23 +2,23 @@ import { Fragment } from 'react/jsx-runtime';
 import styled from 'styled-components';
 
 const ModalContainer = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    padding: 1rem;
+    z-index: 100;
 `;
 const ModalWrapper = styled.div`
     display: block;
     background: var(--color-background);
-    width: 70%;
-    max-width: 800px;
-    height: 70%;
-    padding: 1rem;
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 1rem 1.5rem 1.5rem;
     border-radius: 1rem;
 `;
 const CloseIcon = styled.span`

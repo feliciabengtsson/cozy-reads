@@ -8,7 +8,8 @@ import { useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AddContainer = styled.div`
-    width: fit-content;
+    width: 100%;
+    max-width: 28rem;
     margin: auto;
 `;
 const BannerWrapper = styled.div`
@@ -16,35 +17,31 @@ const BannerWrapper = styled.div`
     justify-content: center;
     align-items: center;
     background-color: var(--color-primary);
-    width: 295px;
-    height: 94px;
-    @media (min-width: 890px) {
-    }
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 7rem;
+    padding: 0 1rem;
+    border-radius: 6px;
 `;
 const AddInput = styled.input`
     background-color: var(--color-neutral-light);
-    width: 14rem;
+    width: 100%;
     border: none;
     border-radius: 15px;
-    padding: 0.5rem;
-    @media (min-width: 890px) {
-    }
+    padding: 0.5rem 0.8rem;
 `;
 const BtnWrapper = styled.div`
     display: flex;
-    margin: 2rem;
-    @media (min-width: 890px) {
-    }
+    margin: 2rem 0;
 `;
 const CreateBtn = styled.input`
     background-color: var(--color-primary);
     border: none;
     border-radius: 15px;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     margin: auto;
     cursor: pointer;
-    @media (min-width: 890px) {
-    }
 `;
 
 interface FormType {
@@ -96,37 +93,27 @@ function CreateCircle() {
                 <form onSubmit={handleSubmit} method="post">
                     <div>
                         <label htmlFor="image">Banner:</label>
-                        <BannerWrapper>
-                            {formData.image ? (
-                                <BannerWrapper
-                                    style={{
-                                        background: `url(${formData.image})`,
-                                        width: 'inherit',
-                                        backgroundSize: 'contain'
-                                    }}
-                                >
-                                    <AddInput
-                                        name="image"
-                                        value={formData.image}
-                                        onChange={handleInputChange}
-                                        type="text"
-                                        placeholder="Enter image URL (optional)"
-                                    ></AddInput>
-                                </BannerWrapper>
-                            ) : (
-                                <AddInput
-                                    name="image"
-                                    value={formData.image}
-                                    onChange={handleInputChange}
-                                    type="text"
-                                    placeholder="Enter image URL (optional)"
-                                ></AddInput>
-                            )}
+                        <BannerWrapper
+                            style={
+                                formData.image
+                                    ? { backgroundImage: `url(${formData.image})` }
+                                    : undefined
+                            }
+                        >
+                            <AddInput
+                                id="image"
+                                name="image"
+                                value={formData.image}
+                                onChange={handleInputChange}
+                                type="text"
+                                placeholder="Enter image URL (optional)"
+                            />
                         </BannerWrapper>
                     </div>
                     <div>
                         <label htmlFor="name">Name:</label>
                         <AddInput
+                            id="name"
                             name="name"
                             onChange={handleInputChange}
                             type="text"
@@ -137,10 +124,11 @@ function CreateCircle() {
                     <div>
                         <label htmlFor="schedule">Meeting schedule:</label>
                         <AddInput
+                            id="schedule"
                             name="schedule"
                             onChange={handleInputChange}
                             type="text"
-                            placeholder="How often will will you meet"
+                            placeholder="How often will you meet?"
                             value={formData.schedule}
                         />
                     </div>

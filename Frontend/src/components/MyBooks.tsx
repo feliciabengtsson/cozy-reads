@@ -14,30 +14,22 @@ const BookContainer = styled.div`
 const BooksDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    align-self: center;
-    width: fit-content;
-    height: fit-content;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 28rem;
     background-color: var(--color-neutral-light);
-    padding: 0.6rem;
+    padding: 0.8rem;
     border-radius: 6px;
 `;
 const BooksCard = styled.div`
-    width: 5.5rem;
-    height: 7rem;
-    margin: 0 5px;
-    @media (min-width: 890px) {
-        width: 8rem;
-        height: 9.5rem;
-    }
+    aspect-ratio: 2 / 3;
+    border-radius: 4px;
+    overflow: hidden;
 `;
 const BookCover = styled.img`
-    width: 5.5rem;
-    height: 7rem;
-    @media (min-width: 890px) {
-        width: 8rem;
-        height: 9.5rem;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 function MyBooks() {
@@ -47,7 +39,7 @@ function MyBooks() {
         <Fragment>
             <BookContainer>
                 <h3>My books:</h3>
-                {books ? (
+                {books.length > 0 ? (
                     <BooksDiv>
                         {books.map((book) => (
                             <BooksCard key={book.id}>

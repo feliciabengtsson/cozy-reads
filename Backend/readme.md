@@ -1,3 +1,3 @@
-Basic fullstack-project, still in development.
+Backend för CozyReads – ett REST-API byggt med Express och PostgreSQL.
 
-CozyReads is a Book Circle app where you can join and create your book circle to connect with others.
+Se huvud-[README](../README.md) för hur appen fungerar, alla API-endpoints och hur man kör projektet lokalt.
